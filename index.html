@@ -263,10 +263,81 @@
           <div class="section-sub">Data collection · Model training · Bias measurement · Feature importance · Correlation analysis</div>
         </div>
       </div>
-      <div class="placeholder">
-        <strong>Text coming soon</strong>
-        This section will cover: (3.1) Data collection · (3.2) Model training · (3.3) Bias measurement: False Positive Rate Disparities · (3.4) Feature importance analysis · (3.5) Correlation analysis: Training vs. Testing Set.
+
+      <!-- 3.1 -->
+      <div style="margin-bottom:2.25rem">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
+          <div style="font-size:.7rem;font-weight:700;color:#3b82f6;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">3.1</div>
+          <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">Data collection</div>
+        </div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">This study uses the Student Performance dataset from the UCI Machine Learning Repository, collected across two Portuguese secondary schools. It contains academic records alongside a range of socio-demographic variables, including gender, displacement status, scholarship holding, parental occupation and education levels, nationality, and financial indicators such as debts status and tuition fee regularity. The target variable is student dropout, that we decided to treat as a binary outcome.</p>
       </div>
+
+      <!-- 3.2 -->
+      <div style="margin-bottom:2.25rem">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
+          <div style="font-size:.7rem;font-weight:700;color:#a855f7;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">3.2</div>
+          <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">Model training</div>
+        </div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1.1rem">Four classification models were trained on the data set: a Gradient Boosting classifier, a Logistic Regression, a Multi-Layer Perceptron (MLP, i.e. a neural network), and a Random Forest. Model performance was evaluated using standard classification metrics, being accuracy, precision, recall, and area under the ROC curve (AUC). All four models achieve satisfactory results, with AUE scores ranging from 0.899 to 0.914 and accuracy between 85.2% and 87.8%, thus consistent with benchmarks reported throughout the existing literature. This also confirms that the models are technically production-ready and therefore that they form appropriate subjects for a bias analysis, such as the one we aimed to conduct.</p>
+
+        <!-- Model cards -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem">
+          <div style="background:#161b22;border:1px solid rgba(59,130,246,.3);border-radius:8px;padding:.85rem">
+            <div style="font-size:.65rem;font-weight:700;color:#3b82f6;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">Gradient Boosting</div>
+            <div style="font-size:.72rem;color:#8b949e;line-height:1.6">Accuracy <span style="color:#e6edf3;font-weight:700">86.8%</span><br>AUC <span style="color:#e6edf3;font-weight:700">0.909</span></div>
+          </div>
+          <div style="background:#161b22;border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:.85rem">
+            <div style="font-size:.65rem;font-weight:700;color:#22c55e;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">Logistic Regression</div>
+            <div style="font-size:.72rem;color:#8b949e;line-height:1.6">Accuracy <span style="color:#e6edf3;font-weight:700">87.8%</span><br>AUC <span style="color:#e6edf3;font-weight:700">0.914</span></div>
+          </div>
+          <div style="background:#161b22;border:1px solid rgba(168,85,247,.3);border-radius:8px;padding:.85rem">
+            <div style="font-size:.65rem;font-weight:700;color:#a855f7;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">MLP</div>
+            <div style="font-size:.72rem;color:#8b949e;line-height:1.6">Accuracy <span style="color:#e6edf3;font-weight:700">85.2%</span><br>AUC <span style="color:#e6edf3;font-weight:700">0.899</span></div>
+          </div>
+          <div style="background:#161b22;border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.85rem">
+            <div style="font-size:.65rem;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">Random Forest</div>
+            <div style="font-size:.72rem;color:#8b949e;line-height:1.6">Accuracy <span style="color:#e6edf3;font-weight:700">86.8%</span><br>AUC <span style="color:#e6edf3;font-weight:700">0.910</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.3 -->
+      <div style="margin-bottom:2.25rem">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
+          <div style="font-size:.7rem;font-weight:700;color:#f59e0b;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">3.3</div>
+          <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">Bias measurement: False Positive Rate Disparities</div>
+        </div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">The core of the bias analysis relied on computing False Positive Rates (FRP) disparities across socio-demographic subgroups. The FRP was defined as :</p>
+
+        <!-- Formula -->
+        <div style="background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:.75rem 1.25rem;display:inline-block;margin-bottom:1rem">
+          <span style="font-family:monospace;font-size:1rem;color:#f59e0b;font-weight:700">FPR = FP / (FP + TN)</span>
+        </div>
+
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">FP being the number of false positives and TN the number of true negatives. It captures the share of students who do not actually drop out but are nonetheless predicted to do so, in other words, students who shouldn't be flagged but still are. FPR was computed separately for each modality of every available socio-demographic variable and compared across groups and models to identify systematic disparities.</p>
+
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">To assess whether raising the decision threshold could resolve the observed disparities, probability density functions of predicted dropout score were examined per group, and FPR decay curves, showing FPR values as a function of decision thresholds ranging from 0.5 to 0.95, are plotted for each model.</p>
+      </div>
+
+      <!-- 3.4 -->
+      <div style="margin-bottom:2.25rem">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
+          <div style="font-size:.7rem;font-weight:700;color:#22c55e;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">3.4</div>
+          <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">Feature importance analysis</div>
+        </div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">To understand the mechanisms driving the observed disparities, permutation importance scores were computed in order to identify the most influential variables in driving model predictions. This step allowed us to examine whether financial variables were structurally embedded in the model's decision process, and to what extent they interact with academic performance features.</p>
+      </div>
+
+      <!-- 3.5 -->
+      <div style="margin-bottom:0">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
+          <div style="font-size:.7rem;font-weight:700;color:#f87171;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">3.5</div>
+          <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">Correlation analysis: Training vs. Testing Set</div>
+        </div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Finally a distributional shift analysis was conducted by comparing the correlation between financial variables (debtor status and tuition fee regularity) and academic performance variables (unit completions and grades) separately in the training and test sets. This comparison allowed us to detect cases where correlations learned during training did not generalise to the test population, and to link these shifts directly to the FPR disparities identified earlier.</p>
+      </div>
+
     </div>
 
     <!-- ═══════════ 4. RESULTS ═══════════ -->
@@ -513,19 +584,159 @@
 
     </div><!-- end results section -->
 
-    <!-- ═══════════ 5. DISCUSSION ═══════════ -->
+        <!-- ═══════════ 5. DISCUSSION ═══════════ -->
     <div class="section" id="discussion">
       <div class="section-header">
         <div class="section-num">05</div>
         <div>
           <div class="section-title">Discussion</div>
+          <div class="section-sub">Findings · Limitations · Recommendations</div>
         </div>
       </div>
-      <div class="placeholder">
-        <strong>Text coming soon</strong>
-        This section will interpret the results in light of the research question, connect findings to broader literature on algorithmic fairness, and address study limitations.
+
+      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1.5rem">The aim of this audit study was to examine the extent to which socioeconomic and demographic variables reflect or reinforce existing inequalities in student achievement. All four models performed satisfactorily, with an AUC score consistently above 0.89 and an accuracy range of 85.2% to 87.8%. However, these aggregate figures mask significant disparities in the distribution of predictive errors across student subgroups.</p>
+
+      <!-- Key numbers -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1.5rem">
+        <div style="background:#161b22;border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:1rem 1.2rem">
+          <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">Debtors — FPR range</div>
+          <div style="font-size:1.5rem;font-weight:700;color:#f87171;margin-bottom:.3rem">25.7% – 34.4%</div>
+          <p style="font-size:.75rem;line-height:1.6;color:#8b949e;margin:0">Up to 1 in 3 financially struggling non-dropouts incorrectly flagged</p>
+        </div>
+        <div style="background:#161b22;border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:1rem 1.2rem">
+          <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">Unpaid tuition fees — FPR peak</div>
+          <div style="font-size:1.5rem;font-weight:700;color:#f59e0b;margin-bottom:.3rem">Up to 64.3%</div>
+          <p style="font-size:.75rem;line-height:1.6;color:#8b949e;margin:0">Reached by Gradient Boosting and MLP — most severe disparity observed</p>
+        </div>
       </div>
+
+      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">The central result concerns financially vulnerable students. Debtors face FPR of between 25.7% and 34.4% across models, meaning that up to one in three financially struggling students who would not have dropped out, is nonetheless flagged as likely to do so. For students with unpaid tuition fees, the disparity is more severe, with FPR figures reaching 64.3% for Gradient Boosting and MLP. This finding reflects a broader, well-documented pattern in which algorithms encode structural disadvantage as predictive signals to reproduce it.</p>
+
+      <!-- Ofqual case study -->
+      <div style="border-left:3px solid rgba(59,130,246,.45);padding:.85rem 1.1rem;margin:0 0 1rem;background:rgba(59,130,246,.05);border-radius:0 8px 8px 0">
+        <div style="font-size:.68rem;color:#3b82f6;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem;font-weight:700">Case in point — Ofqual, UK 2020</div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">For instance, England's Office of Qualifications and Examinations Regulation (Ofqual) used a grading algorithm in 2020, which systematically lowered the grades of students from lower-income schools (Lee &amp; Walter, 2020). This took place during the COVID-19 pandemic when national examinations were cancelled and an algorithmic system was tasked with assigning final grades to hundreds of thousands of students. The algorithm calculated grades by combining teachers' predicted marks with a school's historical performance data. This design choice disproportionately disadvantaged lower-income populations, who were systematically downgraded relative to their teachers' assessments, while students at smaller private schools were comparatively favoured. Following widespread public outcry, the government was forced to abandon the algorithm entirely and return to teacher-assigned grades.</p>
+      </div>
+
+      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">In both cases, the algorithm predicted group affiliation rather than individual outcomes, with lower socio-economic status acting as a proxy for risk rather than a neutral feature. This pattern is driven by a mechanism that illustrates how a model can internalise and automate 'pre-existing bias', which is rooted in social institutions, practices and attitudes. During training, the model learns the correlation between financial difficulty and lower academic performance. This relationship exists independently of the system in society. By perpetuating this association and treating financial status as a stable predictor of negative outcomes, the system mirrors societal-level biases, also referred to as 'pre-existing biases' (Friedman &amp; Nissenbaum, 1996). This aligns with what the authors describe as the core of a biased system, which systematically and unfairly discriminates by assigning undesirable outcomes based on unreasonable or inappropriate grounds.</p>
+
+      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">Ultimately, our findings demonstrate that socio-economic variables are not neutral inputs in predictive models of student dropout. They function as risk proxies, translating structural disadvantage into individual likelihood and resulting in systematic predictive disparities that fall most heavily on those already in the most precarious positions.</p>
+
+      <!-- EU AI Act -->
+      <div style="border-left:3px solid rgba(245,158,11,.45);padding:.85rem 1.1rem;margin:0 0 2rem;background:rgba(245,158,11,.04);border-radius:0 8px 8px 0">
+        <div style="font-size:.68rem;color:#f59e0b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem;font-weight:700">Policy context — EU AI Act (2024)</div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">These findings carry direct implications for the regulation of predictive systems in education. The European Union's AI Act, which came into force in 2024, explicitly classifies AI systems used to determine access to educational institutions or to evaluate students as high-risk, requiring additional mandatory transparency and human oversight. Our results provide a concrete empirical contribution for why this classification is needed. A system that misclassifies up to 64% of financially vulnerable non-dropouts would still bypass conventional validation standards based on overall accuracy scores alone.</p>
+      </div>
+
+      <!-- ── Limitations ── -->
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem">
+        <div style="font-size:.7rem;font-weight:700;color:#a855f7;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">5.1</div>
+        <div style="font-size:1rem;font-weight:700;color:#e6edf3">Limitations</div>
+      </div>
+
+      <!-- Limitation 1 -->
+      <div style="display:flex;gap:.85rem;margin-bottom:1.1rem;align-items:flex-start">
+        <div style="width:22px;height:22px;border-radius:50%;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem">
+          <span style="font-size:.65rem;font-weight:700;color:#a855f7">1</span>
+        </div>
+        <div>
+          <div style="font-size:.78rem;font-weight:700;color:#e6edf3;margin-bottom:.35rem">External validity</div>
+          <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">The dataset originates exclusively from two Portuguese schools and 97% of students are Portuguese nationals. This strong geographic and demographic concentration may restrict the generalisability of our findings. The socio-economic dynamics of the sample and the dropout patterns are specific to the Portuguese secondary education system, and may not necessarily hold in other contexts that, for instance, rely heavily on scholarships, where the variable of having their tuition fees unpaid would proxy a drastically different reality. Yet, consistent with Realinho et al. (2022), the predictive value of socio-demographic variables appears highly context-dependent and may be difficult to generalise across contexts.</p>
+        </div>
+      </div>
+
+      <!-- Limitation 2 -->
+      <div style="display:flex;gap:.85rem;margin-bottom:1.1rem;align-items:flex-start">
+        <div style="width:22px;height:22px;border-radius:50%;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem">
+          <span style="font-size:.65rem;font-weight:700;color:#a855f7">2</span>
+        </div>
+        <div>
+          <div style="font-size:.78rem;font-weight:700;color:#e6edf3;margin-bottom:.35rem">Scope of fairness metrics</div>
+          <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">A further limitation concerns the scope of the fairness metrics employed. This audit relies almost exclusively on false positive rates as its measure of algorithmic bias, capturing the tendency of models to incorrectly predict dropout for students who wouldn't have. While FPR is meaningful in this context, it provides only a partial view of the bias landscape. A more comprehensive audit could additionally examine false negative rates across subgroups as well.</p>
+        </div>
+      </div>
+
+      <!-- Limitation 3 -->
+      <div style="display:flex;gap:.85rem;margin-bottom:1.1rem;align-items:flex-start">
+        <div style="width:22px;height:22px;border-radius:50%;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem">
+          <span style="font-size:.65rem;font-weight:700;color:#a855f7">3</span>
+        </div>
+        <div>
+          <div style="font-size:.78rem;font-weight:700;color:#e6edf3;margin-bottom:.35rem">Statistical significance</div>
+          <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Additionally, the subgroups at the centre of our study (debtors and students with unpaid fees) each represent a critical minority of the total sample used to train the models. The FPR computed for these categories are therefore based on a limited number of observations, and the study does not calculate confidence intervals around these estimates, which would allow us to determine the statistical significance of these findings. While the findings are still important, they should therefore be interpreted with caution.</p>
+        </div>
+      </div>
+
+      <!-- Limitation 4 -->
+      <div style="display:flex;gap:.85rem;margin-bottom:1.1rem;align-items:flex-start">
+        <div style="width:22px;height:22px;border-radius:50%;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem">
+          <span style="font-size:.65rem;font-weight:700;color:#a855f7">4</span>
+        </div>
+        <div>
+          <div style="font-size:.78rem;font-weight:700;color:#e6edf3;margin-bottom:.35rem">Absence of corrective evaluation</div>
+          <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Furthermore, this study identifies biases but does not attempt to correct it. We successfully established that some financial variables drive miscategorisation and a natural next step to these findings would have been to evaluate remediation strategies. For instance, using the Synthetic Minority Oversampling Technique (SMOTE), which generates synthetic observations for underrepresented groups in a class imbalanced dataset could have allowed the models to train on a richer set of examples for financially vulnerable groups, potentially reducing the generalisation and miscategorisation at the heart of this study. A post-processing threshold adjustment, in which we would have set a group-specific decision threshold instead of a broad 0.5 cutoff for all groups, in order to make the bar for flagging a financially unstable student as a dropout higher than for other groups, could also have been tested. The absence of any corrective evaluation means that our study stops at the identification of biases without exploring whether they are technically remediable, which represents a gap between the study and the potential policy implication it was designed to fill.</p>
+        </div>
+      </div>
+
+      <!-- Limitation 5 -->
+      <div style="display:flex;gap:.85rem;margin-bottom:2rem;align-items:flex-start">
+        <div style="width:22px;height:22px;border-radius:50%;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem">
+          <span style="font-size:.65rem;font-weight:700;color:#a855f7">5</span>
+        </div>
+        <div>
+          <div style="font-size:.78rem;font-weight:700;color:#e6edf3;margin-bottom:.35rem">Narrow policy implications</div>
+          <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Finally, this study faces narrow policy implications resulting from the termination of the SATDAP programme. Indeed, the SATDAP programme, which funded the research and the data used in this study, was designed to develop strategies in the early stages of academic curriculum and provide teaching teams with estimates of dropout rates, thus enabling the implementation of timely institutional interventions. However, since this specific funding programme and its associated administrative frameworks closed two years ago, the practical application of our findings is somewhat constrained. There no longer is an active institutional mechanism or a direct policy channel to implement reform. Without the original support structures and government-funded interventions that this data intended to trigger, the predictive models running on this data risk becoming purely descriptive. That said, this does not entirely diminish the relevance of this study. The identified patterns of bias speak directly to the broader debates surrounding algorithmic fairness in public sector applications. The findings have value in that they illustrate the kinds of structural discrimination that can emerge when predictive tools are trained on socio-economically stratified data. As such, our results contribute to a wider body of evidence from EDA that may inform the design of future programmes, institutional auditing practices and policy frameworks, extending beyond the specific context of SATDAP.</p>
+        </div>
+      </div>
+
+      <!-- ── Recommendations ── -->
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
+        <div style="font-size:.7rem;font-weight:700;color:#22c55e;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">5.2</div>
+        <div style="font-size:1rem;font-weight:700;color:#e6edf3">Recommendations</div>
+      </div>
+
+      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1.25rem">Having seen the limitations of our study, we present four key recommendations aimed at policymakers, institutions, and developers. These are deliberately grounded in the specific patterns identified in our analysis, rather than serving as generic prescriptions for algorithmic fairness, and can be read as a direct extension of the empirical findings discussed above.</p>
+
+      <!-- Recommendations table -->
+      <div style="background:#161b22;border:1px solid #21262d;border-radius:10px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:130px 1fr 1fr;background:#0d1117;border-bottom:1px solid #21262d;padding:.65rem 1rem;gap:1rem">
+          <div style="font-size:.7rem;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:.07em">Actor</div>
+          <div style="font-size:.7rem;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:.07em">Recommendation</div>
+          <div style="font-size:.7rem;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:.07em">Link to findings</div>
+        </div>
+
+        <!-- Row 1 -->
+        <div style="display:grid;grid-template-columns:130px 1fr 1fr;border-bottom:1px solid #21262d;padding:1rem;gap:1rem;align-items:start">
+          <div><div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);border-radius:6px;padding:.3rem .65rem"><div style="width:6px;height:6px;border-radius:50%;background:#3b82f6;flex-shrink:0"></div><span style="font-size:.72rem;font-weight:700;color:#3b82f6;white-space:nowrap">Policymakers</span></div></div>
+          <p style="font-size:.8rem;line-height:1.65;color:#c9d1d9;margin:0">Mandate subgroup-level error rate disclosures</p>
+          <div style="border-left:1px solid #21262d;padding-left:1rem"><p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Our models achieved 85 to 87% accuracy while producing FPRs of up to 64% for students with unpaid fees, a disparity invisible in aggregate metrics. Regulatory frameworks under the EU AI Act should require disaggregated FPR reporting by socio-economic subgroup as a condition of deployment approval.</p></div>
+        </div>
+
+        <!-- Row 2 -->
+        <div style="display:grid;grid-template-columns:130px 1fr 1fr;border-bottom:1px solid #21262d;padding:1rem;gap:1rem;align-items:start;background:rgba(245,158,11,.02)">
+          <div><div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:6px;padding:.3rem .65rem"><div style="width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div><span style="font-size:.72rem;font-weight:700;color:#f59e0b;white-space:nowrap">Institutions</span></div></div>
+          <p style="font-size:.8rem;line-height:1.65;color:#c9d1d9;margin:0">Decouple financial vulnerability from academic risk scores</p>
+          <div style="border-left:1px solid #21262d;padding-left:1rem"><p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Financial variables such as debtor status and tuition fee irregularity are negatively correlated with the academic performance variables that most strongly predict dropout. Including them in a single composite risk score means financial hardship is indirectly penalised twice, and institutions should route financially struggling students to financial aid services rather than academic risk pipelines.</p></div>
+        </div>
+
+        <!-- Row 3 -->
+        <div style="display:grid;grid-template-columns:130px 1fr 1fr;border-bottom:1px solid #21262d;padding:1rem;gap:1rem;align-items:start">
+          <div><div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:6px;padding:.3rem .65rem"><div style="width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div><span style="font-size:.72rem;font-weight:700;color:#f59e0b;white-space:nowrap">Institutions</span></div></div>
+          <p style="font-size:.8rem;line-height:1.65;color:#c9d1d9;margin:0">Require meaningful human review before acting on dropout flags</p>
+          <div style="border-left:1px solid #21262d;padding-left:1rem"><p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Given that up to one in three financially vulnerable non-dropouts was incorrectly flagged, automated predictions should never directly trigger institutional consequences. A qualified professional should contextualise model outputs before any intervention is applied to a student.</p></div>
+        </div>
+
+        <!-- Row 4 -->
+        <div style="display:grid;grid-template-columns:130px 1fr 1fr;padding:1rem;gap:1rem;align-items:start;background:rgba(34,197,94,.02)">
+          <div><div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);border-radius:6px;padding:.3rem .65rem"><div style="width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0"></div><span style="font-size:.72rem;font-weight:700;color:#22c55e;white-space:nowrap">Developers</span></div></div>
+          <p style="font-size:.8rem;line-height:1.65;color:#c9d1d9;margin:0">Evaluate threshold adjustment and resampling for minority subgroups</p>
+          <div style="border-left:1px solid #21262d;padding-left:1rem"><p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Our FPR decay analysis showed that raising the decision threshold did not resolve disparities for financially precarious groups. Group-specific thresholds or SMOTE-based resampling should be evaluated as standard remediation steps before deployment.</p></div>
+        </div>
+
+      </div>
+
     </div>
+
 
     <!-- ═══════════ 6. CONCLUSION ═══════════ -->
     <div class="section" id="conclusion">
@@ -535,10 +746,20 @@
           <div class="section-title">Conclusion</div>
         </div>
       </div>
-      <div class="placeholder">
-        <strong>Text coming soon</strong>
-        This section will summarise the key findings, reflect on the ethical implications of using ML to predict student dropout, and outline directions for future research.
+
+      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1.25rem">The objective of this study was to audit a Portuguese higher education dataset through the lens of algorithmic fairness. We have indeed shown that socioeconomic and demographic factors are encoded as risk proxies by the models, producing systematic predictive disparities that reinforce, rather than correct for, existing structural inequalities in the student population.</p>
+
+      <div style="border-left:3px solid rgba(248,113,113,.45);padding:.85rem 1.1rem;margin:0 0 1.25rem;background:rgba(248,113,113,.04);border-radius:0 8px 8px 0">
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Yet, the deeper conclusion that this work points toward is not simply to the flaws of these models, but that the entire thinking of using machine learning to predict student dropout is ethically questionable. Predictive models are, by design, backward-looking instruments. They learn from the past and project it onto the future. In an educational context, this means encoding the accumulated effects of structural inequality and presenting them back as individual risk scores. A student is thus not flagged on the basis of their identity or capabilities, but rather due to the characteristics exhibited by their group.</p>
       </div>
+
+      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1.25rem">This study therefore joins a growing body of research arguing that the deployment of predictive analytics in educational settings requires technical safeguards, but also a fundamental rethinking of what these tools are for and who they might serve.</p>
+
+      <div style="border-left:3px solid rgba(245,158,11,.45);padding:.85rem 1.1rem;margin:0 0 0;background:rgba(245,158,11,.04);border-radius:0 8px 8px 0">
+        <div style="font-size:.68rem;color:#f59e0b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem;font-weight:700">Future research</div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Should predictive models continue to be developed despite the concerns raised here, future research could move decisively away from purely quantitative frameworks. The overgeneralised correlations identified by the study are partly a product of what the data cannot capture. Integrating qualitative methodologies into the model development process could reveal these contextual nuances, thus providing a correction to the reductive logic of binary dropout prediction.</p>
+      </div>
+
     </div>
 
     <!-- ═══════════ 7. BIBLIOGRAPHY ═══════════ -->
@@ -549,10 +770,132 @@
           <div class="section-title">Bibliography</div>
         </div>
       </div>
-      <div class="placeholder">
-        <strong>Text coming soon</strong>
-        Full bibliography will be added here.
+
+      <div style="display:flex;flex-direction:column;gap:.65rem;margin-bottom:2rem">
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Agrusti, F., Bonavolontà, G., &amp; Mezzini, M. (2019). University Dropout Prediction through Educational Data Mining Techniques: A Systematic Review. <em style="color:#8b949e">Journal of E-Learning and Knowledge Society</em>, 15(3), 161–182. <a href="https://doi.org/10.20368/1971-8829/1135017" style="color:#3b82f6;text-decoration:none">https://doi.org/10.20368/1971-8829/1135017</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Alhazmi, E., &amp; Sheneamer, A. (2023). Early Predicting of Students Performance in Higher Education. <em style="color:#8b949e">IEEE Access</em>, 11, 27579–27589. <a href="https://doi.org/10.1109/ACCESS.2023.3250702" style="color:#3b82f6;text-decoration:none">https://doi.org/10.1109/ACCESS.2023.3250702</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Aulck, L., Nambi, D., Velagapudi, N., Blumenstock, J., &amp; West, J. (2019). Mining University Registrar Records to Predict First-Year Undergraduate Attrition. <em style="color:#8b949e">International Educational Data Mining Society</em>. <a href="https://eric.ed.gov/?id=ed599235" style="color:#3b82f6;text-decoration:none">https://eric.ed.gov/?id=ed599235</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Baker, R. S., &amp; Hawn, A. (2022). Algorithmic Bias in Education. <em style="color:#8b949e">International Journal of Artificial Intelligence in Education</em>, 32(4), 1052–1092. <a href="https://doi.org/10.1007/s40593-021-00285-9" style="color:#3b82f6;text-decoration:none">https://doi.org/10.1007/s40593-021-00285-9</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">D'Ignazio, C., &amp; Klein, L. F. (2020). <em style="color:#8b949e">Data Feminism</em>. MIT Press.</p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Dwork, C., Hardt, M., Pitassi, T., Reingold, O., &amp; Zemel, R. (2011). Fairness Through Awareness (arXiv:1104.3913). arXiv. <a href="https://doi.org/10.48550/arXiv.1104.3913" style="color:#3b82f6;text-decoration:none">https://doi.org/10.48550/arXiv.1104.3913</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Eubanks, V. (2018). <em style="color:#8b949e">Automating Inequality: How High-Tech Tools Profile, Police, and Punish the Poor</em>. St. Martin's Publishing Group.</p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Friedman, B., &amp; Nissenbaum, H. (1996). Bias in computer systems. <em style="color:#8b949e">ACM Trans. Inf. Syst.</em>, 14(3), 330–347. <a href="https://doi.org/10.1145/230538.230561" style="color:#3b82f6;text-decoration:none">https://doi.org/10.1145/230538.230561</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Gaftandzhieva, S., Hussain, S., Hilcenko, S., Doneva, R., &amp; Boykova, K. (2023). Data-driven Decision Making in Higher Education Institutions: State-of-play. <em style="color:#8b949e">International Journal of Advanced Computer Science and Applications (IJACSA)</em>, 14(6). <a href="https://doi.org/10.14569/IJACSA.2023.0140642" style="color:#3b82f6;text-decoration:none">https://doi.org/10.14569/IJACSA.2023.0140642</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Garača, Ž., &amp; Čukušić, M. (2010). Student Dropout Analysis with Application of Data Mining Methods. <em style="color:#8b949e">Management: Journal of Contemporary Management Issues</em>, 15.</p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Gonzalez-Nucamendi, A., Noguez, J., Neri, L., Robledo-Rella, V., &amp; García-Castelán, R. M. G. (2023). Predictive analytics study to determine undergraduate students at risk of dropout. <em style="color:#8b949e">Frontiers in Education</em>, 8. <a href="https://doi.org/10.3389/feduc.2023.1244686" style="color:#3b82f6;text-decoration:none">https://doi.org/10.3389/feduc.2023.1244686</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Goren, O., Cohen, L., &amp; Rubinstein, A. (2024). Early Prediction of Student Dropout in Higher Education using Machine Learning Models. 349–359. <a href="https://doi.org/10.5281/zenodo.12729834" style="color:#3b82f6;text-decoration:none">https://doi.org/10.5281/zenodo.12729834</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Guan, X., Feng, X., &amp; Islam, A. Y. M. A. (2023). The dilemma and countermeasures of educational data ethics in the age of intelligence. <em style="color:#8b949e">Humanities and Social Sciences Communications</em>, 10, 1–14. <a href="https://doi.org/10.1057/s41599-023-01633-x" style="color:#3b82f6;text-decoration:none">https://doi.org/10.1057/s41599-023-01633-x</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Gutierrez-Pachas, D. A., Garcia-Zanabria, G., Cuadros-Vargas, E., Camara-Chavez, G., &amp; Gomez-Nieto, E. (2023). Supporting Decision-Making Process on Higher Education Dropout by Analyzing Academic, Socioeconomic, and Equity Factors through Machine Learning and Survival Analysis Methods in the Latin American Context. <em style="color:#8b949e">Education Sciences</em>, 13(2), 154. <a href="https://doi.org/10.3390/educsci13020154" style="color:#3b82f6;text-decoration:none">https://doi.org/10.3390/educsci13020154</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Juhaňák, L., Zounek, J., &amp; Rohlíková, L. (2017). Using process mining to analyze students' quiz-taking behavior patterns in a learning management system. <em style="color:#8b949e">Computers in Human Behavior</em>, 92. <a href="https://doi.org/10.1016/j.chb.2017.12.015" style="color:#3b82f6;text-decoration:none">https://doi.org/10.1016/j.chb.2017.12.015</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Kalita, E., Oyelere, S. S., Gaftandzhieva, S., Rajesh, K. N. V. P. S., Jagatheesaperumal, S. K., Mohamed, A., Elbarawy, Y. M., Desuky, A. S., Hussain, S., Cifci, M. A., Theodorou, P., Hilčenko, S., Hazarika, J., &amp; Ali, T. (2025). Educational data mining: A 10-year review. <em style="color:#8b949e">Discover Computing</em>, 28(1), 81. <a href="https://doi.org/10.1007/s10791-025-09589-z" style="color:#3b82f6;text-decoration:none">https://doi.org/10.1007/s10791-025-09589-z</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Kearns, M., Roth, A., Kearns, M., &amp; Roth, A. (2020). <em style="color:#8b949e">The Ethical Algorithm: The Science of Socially Aware Algorithm Design</em>. Oxford University Press.</p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Kocsis, Á., &amp; Molnár, G. (2025). Factors influencing academic performance and dropout rates in higher education. <em style="color:#8b949e">Oxford Review of Education</em>, 51(3), 414–432. <a href="https://doi.org/10.1080/03054985.2024.2316616" style="color:#3b82f6;text-decoration:none">https://doi.org/10.1080/03054985.2024.2316616</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Pristyanto, Y., Pratama, I., &amp; Nugraha, A. (2018). Data level approach for imbalanced class handling on educational data mining multiclass classification. 310–314. <a href="https://doi.org/10.1109/ICOIACT.2018.8350792" style="color:#3b82f6;text-decoration:none">https://doi.org/10.1109/ICOIACT.2018.8350792</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Suresh, H., &amp; Guttag, J. V. (2019, January 28). A Framework for Understanding Sources of Harm throughout the Machine Learning Life Cycle. <em style="color:#8b949e">arXiv.Org</em>. <a href="https://doi.org/10.1145/3465416.3483305" style="color:#3b82f6;text-decoration:none">https://doi.org/10.1145/3465416.3483305</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Tinto, V. (1975). Dropout from Higher Education: A Theoretical Synthesis of Recent Research. <em style="color:#8b949e">Review of Educational Research</em>, 45(1), 89–125. <a href="https://doi.org/10.2307/1170024" style="color:#3b82f6;text-decoration:none">https://doi.org/10.2307/1170024</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Triayudi, A., &amp; Widyarto, W. (2021). Educational Data Mining Analysis Using Classification Techniques. <em style="color:#8b949e">Journal of Physics: Conference Series</em>, 1933, 012061. <a href="https://doi.org/10.1088/1742-6596/1933/1/012061" style="color:#3b82f6;text-decoration:none">https://doi.org/10.1088/1742-6596/1933/1/012061</a></p>
+        </div>
+
+        <div style="display:flex;gap:.85rem;align-items:flex-start;padding:.75rem;background:#161b22;border:1px solid #21262d;border-radius:8px">
+          <div style="width:3px;min-height:100%;background:#3b82f6;border-radius:2px;flex-shrink:0;align-self:stretch"></div>
+          <p style="font-size:.8rem;line-height:1.75;color:#c9d1d9;margin:0">Zorić, A. B. (2020). Benefits of Educational Data Mining. <em style="color:#8b949e">Journal of International Business Research and Marketing</em>, 6, 2020. <a href="https://doi.org/10.18775/jibrm.1849-8558.2015.61.3002" style="color:#3b82f6;text-decoration:none">https://doi.org/10.18775/jibrm.1849-8558.2015.61.3002</a></p>
+        </div>
+
       </div>
+
+      <!-- NB -->
+      <div style="background:#161b22;border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:.85rem 1.1rem">
+        <div style="font-size:.68rem;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">NB</div>
+        <p style="font-size:.78rem;line-height:1.7;color:#8b949e;margin:0">This project made limited use of Claude (Anthropic), primarily for formatting and presentational tasks such as structuring the GitHub Pages website. It was not used in the production of core analytical or argumentative content.</p>
+      </div>
+
     </div>
 
   </div><!-- end page -->
