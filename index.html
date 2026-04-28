@@ -639,17 +639,12 @@ const decayData = {
 };
 const decayColors = { 'Tuition fees (No)':C.amber,'Debtor (Yes)':C.rose,'Gender (Male)':C.blue,'Scholarship (No)':'#a855f7','Displaced (No)':C.LR };
 
-const corrDebtor = [
-  { m:'1st sem (approved)', test:-0.117397, train:-0.107481 },
-  { m:'1st sem (grade)',    test:-0.099544, train:-0.112469 },
-  { m:'2nd sem (approved)', test:-0.173182, train:-0.147190 },
-  { m:'2nd sem (grade)',    test:-0.148863, train:-0.145587 },
-];
-const corrTuition = [
-  { m:'1st sem (approved)', test:0.195501, train:0.244942 },
-  { m:'1st sem (grade)',    test:0.178602, train:0.266044 },
-  { m:'2nd sem (approved)', test:0.246127, train:0.299636 },
-  { m:'2nd sem (grade)',    test:0.230503, train:0.310400 },
+
+const corrJointFinancial = [
+  { m: '1st Sem (Approved Units)', test: -0.1106, train: -0.1522 },
+  { m: '1st Sem (Average Grade)',  test: -0.0975, train: -0.1554 },
+  { m: '2nd Sem (Approved Units)', test: -0.1618, train: -0.1903 },
+  { m: '2nd Sem (Average Grade)',  test: -0.1455, train: -0.1883 },
 ];
 
 // ── Chart defaults ────────────────────────────────────────────────────────────
@@ -734,8 +729,7 @@ function makeCorrCard(elId,data,color,title,note) {
   html+=`</tbody></table>`;
   document.getElementById(elId).innerHTML=html;
 }
-makeCorrCard('corr-debtor',corrDebtor,C.rose,'Debtor (Yes)','For debtor : in the training set, correlation with grades is a bit less strong in magnitude');
-makeCorrCard('corr-tuition',corrTuition,C.amber,'Tuition fees up to date (No)','For students struggling to pay tuition fees : correlation with grades are far less important in magnitude in the testing set');
+makeCorrCard('corrJointFinancial',corrDebtor,C.rose,'Financial stress correlation with grades','In the training set, correlation with grades is a stronger in magnitude');
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
 function showTab(id,btn) {
