@@ -498,10 +498,10 @@
 
       <!-- TAB: CORRELATIONS -->
       <div id="tab-corr" class="tab-content">
-        <div class="g2 mb">
-          <div class="card" id="corr-debtor"></div>
-          <div class="card" id="corr-tuition"></div>
-        </div>
+        <div class="mb">
+    <div class="card" id="corr-joint-financial">
+    </div>
+    </div>
         <div class="card" style="border-color:rgba(245,158,11,.2);background:rgba(245,158,11,.03)">
           
           <div class="finding">
@@ -639,17 +639,11 @@ const decayData = {
 };
 const decayColors = { 'Tuition fees (No)':C.amber,'Debtor (Yes)':C.rose,'Gender (Male)':C.blue,'Scholarship (No)':'#a855f7','Displaced (No)':C.LR };
 
-const corrDebtor = [
-  { m:'1st sem (approved)', test:-0.117397, train:-0.107481 },
-  { m:'1st sem (grade)',    test:-0.099544, train:-0.112469 },
-  { m:'2nd sem (approved)', test:-0.173182, train:-0.147190 },
-  { m:'2nd sem (grade)',    test:-0.148863, train:-0.145587 },
-];
-const corrTuition = [
-  { m:'1st sem (approved)', test:0.195501, train:0.244942 },
-  { m:'1st sem (grade)',    test:0.178602, train:0.266044 },
-  { m:'2nd sem (approved)', test:0.246127, train:0.299636 },
-  { m:'2nd sem (grade)',    test:0.230503, train:0.310400 },
+const corrJointFinancial = [
+  { m: '1st sem (approved)', test: -0.110628, train: -0.152245 },
+  { m: '1st sem (grade)',    test: -0.097543, train: -0.155397 },
+  { m: '2nd sem (approved)', test: -0.161820, train: -0.190280 },
+  { m: '2nd sem (grade)',    test: -0.145499, train: -0.188299 },
 ];
 
 // ── Chart defaults ────────────────────────────────────────────────────────────
@@ -728,14 +722,42 @@ const top5El = document.getElementById('top5');
 });
 
 // ── Correlations ──────────────────────────────────────────────────────────────
-function makeCorrCard(elId,data,color,title,note) {
-  let html=`<div style="display:flex;align-items:center;gap:.45rem;margin-bottom:.85rem"><div style="width:3px;height:1rem;background:${color};border-radius:2px;flex-shrink:0"></div><span style="font-weight:700;font-size:.82rem">${title}</span></div><p style="font-size:.78rem;color:#8b949e;font-style:italic;margin-bottom:.65rem">${note}</p><table><thead><tr><th class="l">Metric</th><th class="r" style="color:#60a5fa">Test</th><th class="r" style="color:#34d399">Train</th><th class="r" style="color:${color}">Δ</th></tr></thead><tbody>`;
-  data.forEach(r => { const d=(r.test-r.train).toFixed(4); html+=`<tr><td class="l">${r.m}</td><td class="r mono" style="color:#60a5fa">${r.test.toFixed(6)}</td><td class="r mono" style="color:#34d399">${r.train.toFixed(6)}</td><td class="r mono" style="color:${color};font-size:.72rem">${parseFloat(d)>0?'+':''}${d}</td></tr>`; });
-  html+=`</tbody></table>`;
-  document.getElementById(elId).innerHTML=html;
+function renderJointCorr(data, containerId) {
+  const container = document.getElementById(containerId);
+  
+  let html = `
+    <h3>Joint Financial Stress Correlation (Debtor + Tuition)</h3>
+    <p class="subtitle">Correlation with academic performance</p>
+    <table class="bias-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="text-right">Test</th>
+          <th class="text-right">Train</th>
+          <th class="text-right">Δ (Shift)</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${data.map(d => {
+          const shift = d.test - d.train;
+          return `
+            <tr>
+              <td>${d.m}</td>
+              <td class="text-right ${d.test < -0.1 ? 'high-bias' : ''}">${d.test.toFixed(4)}</td>
+              <td class="text-right">${d.train.toFixed(4)}</td>
+              <td class="text-right ${Math.abs(shift) > 0.04 ? 'warning' : ''}">${shift > 0 ? '+' : ''}${shift.toFixed(4)}</td>
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+  `;
+  
+  container.innerHTML = html;
 }
-makeCorrCard('corr-debtor',corrDebtor,C.rose,'Debtor (Yes)','For debtor : in the training set, correlation with grades is a bit less strong in magnitude');
-makeCorrCard('corr-tuition',corrTuition,C.amber,'Tuition fees up to date (No)','For students struggling to pay tuition fees : correlation with grades are far less important in magnitude in the testing set');
+
+// 3. Appel de la fonction
+renderJointCorr(corrJointFinancial, 'corr-joint-financial');
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
 function showTab(id,btn) {
