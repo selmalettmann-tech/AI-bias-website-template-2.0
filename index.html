@@ -427,7 +427,7 @@
 
         <!-- Finding: financial -->
         <div class="card mb" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03)">
-          <div class="finding">What we see here is that not only do our models miscategorize financially unstable students a whole lot more than the regular students, but they are also very much sure about their predictions. Even with a higher decision threshold, students would still be miscategorized. To push this analysis a bit further, let&rsquo;s have a look at the FPR decay rate for each model, which is the FPR value for different decision thresholds.</div>
+          <div class="finding">What we see here is that not only do our models <strong>miscategorize financially unstable students a whole lot more than the regular students, but they are also very much sure about their predictions</strong>. Even with a higher decision threshold, students would still be miscategorized. To push this analysis a bit further, let&rsquo;s have a look at the FPR decay rate for each model, which is the FPR value for different decision thresholds.</div>
         </div>
 
         <!-- FPR Decay — all 4 models -->
@@ -457,6 +457,12 @@
         <div class="card" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03)">
           <div class="finding">What appears here is that, except for the random forest model (for reasons we will see later on), the difference in FPR decay rates show that, even for higher decision thresholds, <strong>financially unstable students still get miscategorized 5 to ten times more than students with other characteristics.</strong></div>
         </div>
+        <div class="card mb" style="border-color:rgba(59,130,246,.15); background:rgba(59,130,246,.02); margin-bottom: 20px;">
+  <div class="finding">
+    To understand why our models are so sure about their decision, let's have a look at 
+    <strong style="color:rgb(59, 130, 246);">what features drive dropout predictions</strong>.
+  </div>
+</div>
 
       </div>
 
@@ -499,156 +505,19 @@
 
     </div><!-- end results section -->
 
-        <!-- ═══════════ 5. DISCUSSION ═══════════ -->
+    <!-- ═══════════ 5. DISCUSSION ═══════════ -->
     <div class="section" id="discussion">
       <div class="section-header">
         <div class="section-num">05</div>
         <div>
           <div class="section-title">Discussion</div>
-          <div class="section-sub">Findings · Limitations · Recommendations</div>
         </div>
       </div>
-
-      <!-- Intro -->
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1.5rem">The aim of this audit study was to examine the extent to which socioeconomic and demographic variables reflect or reinforce existing inequalities in student achievement. All four models performed satisfactorily, with an AUC score consistently above 0.89 and an accuracy range of 85.2% to 87.8%. However, these aggregate figures mask significant disparities in the distribution of predictive errors across student subgroups.</p>
-
-      <!-- Key finding callout -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1.75rem">
-        <div style="background:#161b22;border:1px solid rgba(248,113,113,.35);border-radius:10px;padding:1.1rem 1.3rem">
-          <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem">Debtors — False Positive Rate</div>
-          <div style="font-size:1.6rem;font-weight:700;color:#f87171;margin-bottom:.3rem">25.7% – 34.4%</div>
-          <p style="font-size:.78rem;line-height:1.6;color:#8b949e;margin:0">Up to 1 in 3 financially struggling students who would not have dropped out is nonetheless flagged as likely to do so.</p>
-        </div>
-        <div style="background:#161b22;border:1px solid rgba(245,158,11,.35);border-radius:10px;padding:1.1rem 1.3rem">
-          <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem">Unpaid Tuition Fees — False Positive Rate</div>
-          <div style="font-size:1.6rem;font-weight:700;color:#f59e0b;margin-bottom:.3rem">Up to 64.3%</div>
-          <p style="font-size:.78rem;line-height:1.6;color:#8b949e;margin:0">Reached by both Gradient Boosting and MLP — the most severe disparity observed across all subgroups.</p>
-        </div>
+      <div class="placeholder">
+        <strong>Text coming soon</strong>
+        This section will interpret the results in light of the research question, connect findings to broader literature on algorithmic fairness, and address study limitations.
       </div>
-
-      <!-- Main findings -->
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">The central result concerns financially vulnerable students. Debtors face FPR of between 25.7% and 34.4% across models, meaning that up to one in three financially struggling students who would not have dropped out, is nonetheless flagged as likely to do so. For students with unpaid tuition fees, the disparity is more severe, with FPR figures reaching 64.3% for Gradient Boosting and MLP. This finding reflects a broader, well-documented pattern in which algorithms encode structural disadvantage as predictive signals to reproduce it.</p>
-
-      <div style="border-left:3px solid rgba(59,130,246,.45);padding:.85rem 1.1rem;margin:1.25rem 0;background:rgba(59,130,246,.05);border-radius:0 8px 8px 0">
-        <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.45rem">Case study — Ofqual algorithm, UK 2020</div>
-        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">For instance, England's Office of Qualifications and Examinations Regulation (Ofqual) used a grading algorithm in 2020, which systematically lowered the grades of students from lower-income schools (Lee &amp; Walter, 2020). This took place during the COVID-19 pandemic when national examinations were cancelled and an algorithmic system was tasked with assigning final grades to hundreds of thousands of students. The algorithm calculated grades by combining teachers' predicted marks with a school's historical performance data. This design choice disproportionately disadvantaged lower-income populations, who were systematically downgraded relative to their teachers' assessments, while students at smaller private schools were comparatively favoured. Following widespread public outcry, the government was forced to abandon the algorithm entirely and return to teacher-assigned grades.</p>
-      </div>
-
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">In both cases, the algorithm predicted group affiliation rather than individual outcomes, with lower socio-economic status acting as a proxy for risk rather than a neutral feature. This pattern is driven by a mechanism that illustrates how a model can internalise and automate 'pre-existing bias', which is rooted in social institutions, practices and attitudes. During training, the model learns the correlation between financial difficulty and lower academic performance. This relationship exists independently of the system in society. By perpetuating this association and treating financial status as a stable predictor of negative outcomes, the system mirrors societal-level biases, also referred to as 'pre-existing biases' (Friedman &amp; Nissenbaum, 1996). This aligns with what the authors describe as the core of a biased system, which systematically and unfairly discriminates by assigning undesirable outcomes based on unreasonable or inappropriate grounds.</p>
-
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">Ultimately, our findings demonstrate that socio-economic variables are not neutral inputs in predictive models of student dropout. They function as risk proxies, translating structural disadvantage into individual likelihood and resulting in systematic predictive disparities that fall most heavily on those already in the most precarious positions.</p>
-
-      <div style="border-left:3px solid rgba(245,158,11,.45);padding:.85rem 1.1rem;margin:1.25rem 0 1.75rem;background:rgba(245,158,11,.04);border-radius:0 8px 8px 0">
-        <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.45rem">Policy implication — EU AI Act (2024)</div>
-        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">These findings carry direct implications for the regulation of predictive systems in education. The European Union's AI Act, which came into force in 2024, explicitly classifies AI systems used to determine access to educational institutions or to evaluate students as high-risk, requiring additional mandatory transparency and human oversight. Our results provide a concrete empirical contribution for why this classification is needed. A system that misclassifies up to 64% of financially vulnerable non-dropouts would still bypass conventional validation standards based on overall accuracy scores alone.</p>
-      </div>
-
-      <!-- Limitations -->
-      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
-        <div style="font-size:.7rem;font-weight:700;color:#a855f7;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">Limitations</div>
-        <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">Study Limitations</div>
-      </div>
-
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">There are several limitations to our study. First, the study is prone to limited external validity. The dataset originates exclusively from two Portuguese schools and 97% of students are Portuguese nationals. This strong geographic and demographic concentration may restrict the generalisability of our findings. The socio-economic dynamics of the sample and the dropout patterns are specific to the Portuguese secondary education system, and may not necessarily hold in other contexts that, for instance, rely heavily on scholarships, where the variable of having their tuition fees unpaid would proxy a drastically different reality. Yet, consistent with Realinho et al. (2022), the predictive value of socio-demographic variables appears highly context-dependent and may be difficult to generalise across contexts.</p>
-
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">A further limitation concerns the scope of the fairness metrics employed. This audit relies almost exclusively on false positive rates as its measure of algorithmic bias, capturing the tendency of models to incorrectly predict dropout for students who wouldn't have. While FPR is meaningful in this context, it provides only a partial view of the bias landscape. A more comprehensive audit could additionally examine false negative rates across subgroups as well.</p>
-
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">Additionally, the subgroups at the centre of our study (debtors and students with unpaid fees) each represent a critical minority of the total sample used to train the models. The FPR computed for these categories are therefore based on a limited number of observations, and the study does not calculate confidence intervals around these estimates, which would allow us to determine the statistical significance of these findings. While the findings are still important, they should therefore be interpreted with caution.</p>
-
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">Furthermore, this study identifies biases but does not attempt to correct it. We successfully established that some financial variables drive miscategorisation and a natural next step to these findings would have been to evaluate remediation strategies. For instance, using the Synthetic Minority Oversampling Technique (SMOTE), which generates synthetic observations for underrepresented groups in a class imbalanced dataset could have allowed the models to train on a richer set of examples for financially vulnerable groups, potentially reducing the generalisation and miscategorisation at the heart of this study. A post-processing threshold adjustment, in which we would have set a group-specific decision threshold instead of a broad 0.5 cutoff for all groups, in order to make the bar for flagging a financially unstable student as a dropout higher than for other groups, could also have been tested. The absence of any corrective evaluation means that our study stops at the identification of biases without exploring whether they are technically remediable, which represents a gap between the study and the potential policy implication it was designed to fill.</p>
-
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1.75rem">Finally, this study faces narrow policy implications resulting from the termination of the SATDAP programme. Indeed, the SATDAP programme, which funded the research and the data used in this study, was designed to develop strategies in the early stages of academic curriculum and provide teaching teams with estimates of dropout rates, thus enabling the implementation of timely institutional interventions. However, since this specific funding programme and its associated administrative frameworks closed two years ago, the practical application of our findings is somewhat constrained. There no longer is an active institutional mechanism or a direct policy channel to implement reform. Without the original support structures and government-funded interventions that this data intended to trigger, the predictive models running on this data risk becoming purely descriptive. That said, this does not entirely diminish the relevance of this study. The identified patterns of bias speak directly to the broader debates surrounding algorithmic fairness in public sector applications. The findings have value in that they illustrate the kinds of structural discrimination that can emerge when predictive tools are trained on socio-economically stratified data. As such, our results contribute to a wider body of evidence from EDA that may inform the design of future programmes, institutional auditing practices and policy frameworks, extending beyond the specific context of SATDAP.</p>
-
-      <!-- Recommendations -->
-      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem">
-        <div style="font-size:.7rem;font-weight:700;color:#22c55e;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">Recommendations</div>
-        <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">Four Key Recommendations</div>
-      </div>
-
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1.25rem">Having seen the limitations of our study, we present four key recommendations aimed at policymakers, institutions, and developers. These are deliberately grounded in the specific patterns identified in our analysis, rather than serving as generic prescriptions for algorithmic fairness, and can be read as a direct extension of the empirical findings discussed above.</p>
-
-      <!-- Recommendations table -->
-      <div style="background:#161b22;border:1px solid #21262d;border-radius:10px;overflow:hidden;margin-bottom:0">
-
-        <!-- Table header -->
-        <div style="display:grid;grid-template-columns:130px 1fr 1fr;background:#0d1117;border-bottom:1px solid #21262d;padding:.6rem 1rem;gap:1rem">
-          <div style="font-size:.7rem;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:.07em">Actor</div>
-          <div style="font-size:.7rem;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:.07em">Recommendation</div>
-          <div style="font-size:.7rem;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:.07em">Link to findings</div>
-        </div>
-
-        <!-- Row 1 — Policymakers -->
-        <div style="display:grid;grid-template-columns:130px 1fr 1fr;border-bottom:1px solid #21262d;padding:1rem;gap:1rem;align-items:start">
-          <div>
-            <div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);border-radius:6px;padding:.3rem .65rem">
-              <div style="width:6px;height:6px;border-radius:50%;background:#3b82f6;flex-shrink:0"></div>
-              <span style="font-size:.72rem;font-weight:700;color:#3b82f6;white-space:nowrap">Policymakers</span>
-            </div>
-          </div>
-          <div>
-            <div style="font-size:.8rem;font-weight:700;color:#e6edf3;margin-bottom:.4rem">Mandate subgroup-level error rate disclosures</div>
-            <p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Regulatory frameworks under the EU AI Act should require disaggregated FPR reporting by socio-economic subgroup as a condition of deployment approval.</p>
-          </div>
-          <div style="border-left:1px solid #21262d;padding-left:1rem">
-            <p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Our models achieved 85 to 87% accuracy while producing FPRs of up to 64% for students with unpaid fees — a disparity invisible in aggregate metrics.</p>
-          </div>
-        </div>
-
-        <!-- Row 2 — Institutions (1) -->
-        <div style="display:grid;grid-template-columns:130px 1fr 1fr;border-bottom:1px solid #21262d;padding:1rem;gap:1rem;align-items:start;background:rgba(245,158,11,.02)">
-          <div>
-            <div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:6px;padding:.3rem .65rem">
-              <div style="width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div>
-              <span style="font-size:.72rem;font-weight:700;color:#f59e0b;white-space:nowrap">Institutions</span>
-            </div>
-          </div>
-          <div>
-            <div style="font-size:.8rem;font-weight:700;color:#e6edf3;margin-bottom:.4rem">Decouple financial vulnerability from academic risk scores</div>
-            <p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Institutions should route financially struggling students to financial aid services rather than academic risk pipelines.</p>
-          </div>
-          <div style="border-left:1px solid #21262d;padding-left:1rem">
-            <p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Financial variables such as debtor status and tuition fee irregularity are negatively correlated with academic performance variables. Including them in a single composite risk score means financial hardship is indirectly penalised twice.</p>
-          </div>
-        </div>
-
-        <!-- Row 3 — Institutions (2) -->
-        <div style="display:grid;grid-template-columns:130px 1fr 1fr;border-bottom:1px solid #21262d;padding:1rem;gap:1rem;align-items:start">
-          <div>
-            <div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:6px;padding:.3rem .65rem">
-              <div style="width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div>
-              <span style="font-size:.72rem;font-weight:700;color:#f59e0b;white-space:nowrap">Institutions</span>
-            </div>
-          </div>
-          <div>
-            <div style="font-size:.8rem;font-weight:700;color:#e6edf3;margin-bottom:.4rem">Require meaningful human review before acting on dropout flags</div>
-            <p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Automated predictions should never directly trigger institutional consequences. A qualified professional should contextualise model outputs before any intervention is applied to a student.</p>
-          </div>
-          <div style="border-left:1px solid #21262d;padding-left:1rem">
-            <p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Given that up to one in three financially vulnerable non-dropouts was incorrectly flagged, unmediated automated action creates direct risk of harm to already precarious students.</p>
-          </div>
-        </div>
-
-        <!-- Row 4 — Developers -->
-        <div style="display:grid;grid-template-columns:130px 1fr 1fr;padding:1rem;gap:1rem;align-items:start;background:rgba(34,197,94,.02)">
-          <div>
-            <div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);border-radius:6px;padding:.3rem .65rem">
-              <div style="width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0"></div>
-              <span style="font-size:.72rem;font-weight:700;color:#22c55e;white-space:nowrap">Developers</span>
-            </div>
-          </div>
-          <div>
-            <div style="font-size:.8rem;font-weight:700;color:#e6edf3;margin-bottom:.4rem">Evaluate threshold adjustment and resampling for minority subgroups</div>
-            <p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Group-specific thresholds or SMOTE-based resampling should be evaluated as standard remediation steps before deployment.</p>
-          </div>
-          <div style="border-left:1px solid #21262d;padding-left:1rem">
-            <p style="font-size:.78rem;line-height:1.65;color:#8b949e;margin:0">Our FPR decay analysis showed that raising the decision threshold did not resolve disparities for financially precarious groups, underscoring the need for targeted technical interventions.</p>
-          </div>
-        </div>
-
-      </div>
-
     </div>
-
 
     <!-- ═══════════ 6. CONCLUSION ═══════════ -->
     <div class="section" id="conclusion">
