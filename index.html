@@ -728,7 +728,7 @@ function makeCorrCard(elId,data,color,title,note) {
   html+=`</tbody></table>`;
   document.getElementById(elId).innerHTML=html;
 }
-makeCorrCard('corrJointFinancial',corrDebtor,C.rose,'Financial stress correlation with grades','In the training set, correlation with grades is a stronger in magnitude');
+makeCorrCard('corrJointFinancial',corrJointFinancial,C.rose,'Financial stress correlation with grades','In the training set, correlation with grades is a stronger in magnitude');
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
 function showTab(id,btn) {
