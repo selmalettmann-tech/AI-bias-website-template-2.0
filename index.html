@@ -499,9 +499,9 @@
       <!-- TAB: CORRELATIONS -->
       <div id="tab-corr" class="tab-content">
         <div class="mb">
-    <div class="card" id="corr-joint-financial">
+  <div class="card audit-card" id="corr-joint-financial">
     </div>
-    </div>
+</div>
         <div class="card" style="border-color:rgba(245,158,11,.2);background:rgba(245,158,11,.03)">
           
           <div class="finding">
@@ -726,37 +726,53 @@ function renderJointCorr(data, containerId) {
   const container = document.getElementById(containerId);
   
   let html = `
-    <h3>Joint Financial Stress Correlation (Debtor + Tuition)</h3>
-    <p class="subtitle">Correlation with academic performance</p>
-    <table class="bias-table">
+    <div class="audit-header">
+      <div class="title-group">
+        <h3>Joint Financial Impact Analysis</h3>
+        <span class="badge-info">Debt & Tuition Status</span>
+      </div>
+      <p class="description">Correlation between financial stress and academic performance</p>
+    </div>
+    
+    <table class="audit-table">
       <thead>
         <tr>
-          <th>Metric</th>
-          <th class="text-right">Test</th>
-          <th class="text-right">Train</th>
-          <th class="text-right">Δ (Shift)</th>
+          <th>Performance Metric</th>
+          <th class="text-center">Test Set</th>
+          <th class="text-center">Train Set</th>
+          <th class="text-center">Correlation Shift</th>
         </tr>
       </thead>
       <tbody>
         ${data.map(d => {
           const shift = d.test - d.train;
+          const isImprovement = shift > 0; // Moins de corrélation négative = monde plus juste
           return `
             <tr>
-              <td>${d.m}</td>
-              <td class="text-right ${d.test < -0.1 ? 'high-bias' : ''}">${d.test.toFixed(4)}</td>
-              <td class="text-right">${d.train.toFixed(4)}</td>
-              <td class="text-right ${Math.abs(shift) > 0.04 ? 'warning' : ''}">${shift > 0 ? '+' : ''}${shift.toFixed(4)}</td>
+              <td class="metric-label">${d.m}</td>
+              <td class="text-center score-cell">${d.test.toFixed(4)}</td>
+              <td class="text-center score-cell muted">${d.train.toFixed(4)}</td>
+              <td class="text-center">
+                <span class="shift-badge ${isImprovement ? 'positive' : 'negative'}">
+                  ${isImprovement ? '↑' : '↓'} ${Math.abs(shift).toFixed(4)}
+                </span>
+              </td>
             </tr>
           `;
         }).join('')}
       </tbody>
     </table>
+    
+    <div class="audit-insight">
+      <strong>Insight :</strong> Le modèle surestime l'impact de la précarité. 
+      La corrélation négative a diminué de <span class="highlight">${(Math.abs(data[1].test - data[1].train)).toFixed(3)}</span> 
+      points sur les notes du 1er semestre.
+    </div>
   `;
   
   container.innerHTML = html;
 }
 
-// 3. Appel de la fonction
 renderJointCorr(corrJointFinancial, 'corr-joint-financial');
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
