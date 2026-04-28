@@ -194,44 +194,65 @@
 </div>
 
     <!-- ═══════════ 2. LITERATURE REVIEW ═══════════ -->
-<div class="section" id="litreview">
-  <div class="section-header">
-    <div class="section-num">02</div>
-    <div>
-      <div class="section-title">Literature Review</div>
-      <div class="section-sub">EDM · Socio-economic variables · Algorithmic fairness</div>
+<!-- ═══════════ 2. LITERATURE REVIEW ═══════════ -->
+    <div class="section" id="litreview">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div>
+          <div class="section-title">Literature Review</div>
+          <div class="section-sub">EDM · Socio-economic variables · Algorithmic fairness</div>
+        </div>
+      </div>
+
+      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 2rem">The following section gives an overview of the landscape of Educational Data Mining (EDM) and the debates around socio-economic and demographic variables in predicting student performance. It goes on to examine how the field's predominantly technical orientation has left a gap in critical bias analysis, a gap this study aims to address. These different streams of literature help frame our methodology and understanding of the dataset and educational sector as inherently entrenched in structural inequalities that data alone cannot neutralise.</p>
+
+      <!-- ── 2.1 ── -->
+      <div style="margin-bottom:2.5rem">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
+          <div style="font-size:.7rem;font-weight:700;color:#3b82f6;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">2.1</div>
+          <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">Landscape of Educational Data Mining (EDM) and Student Dropout</div>
+        </div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">As noted by Kalita et al. (2025) in their systematic review, the rapid digitization of educational institutions has led institutions and research to increasingly rely on data-driven strategies, in hopes of enhancing learning experiences and institutional efficiency. Catalyzed by adoption of e-learning tools during COVID-19 in 2020 and the availability of vast amounts of educational data, there was an increase in studies carrying out Educational Data Mining (EDM, Ling et al., 2023). EDM is an interdisciplinary field, emerging in the 1990s, combining tools and techniques from statistics, data mining, and machine learning to find new relationships and information in big datasets (Zorić, 2020). It usually involves four iterative phases of problem definition, data preparation and gathering, modelling and evaluation, and deployment. The underlying assumption of EDM is that valuable information can be extracted from the data to improve the decision-making processes and student experience in education (Gaftandzhieva et al., 2023).</p>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">Previous literature has, for instance, used EDM to identify unusual patterns in student behavior (Juhaňák et al., 2017), sort students into groups (Triayudi & Widyarto, 2021), predict student performance (Zorić, 2020), and predict student dropout rate (Agrusti et al., 2019). Though originating in the 1970s with Tinto (1975), the student dropout problem has gained prevalence in EDM due to high dropout rates in the US (Aulck et al., 2019) and increased financial strain in Western institutions (Garača & Čukušić, 2010). Various studies have used machine learning methods, primarily on institutional data for availability concerns, to attempt to more efficiently predict students at-risk of dropout.</p>
+        <div style="border-left:3px solid rgba(59,130,246,.45);padding:.85rem 1.1rem;margin:1.25rem 0;background:rgba(59,130,246,.05);border-radius:0 8px 8px 0">
+          <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Yet, Kalita et al. (2025) also accurately highlight that EDM is intertwined with issues in educational data ethics (Guan et al., 2023), privacy, and security (Zorić, 2020). Current EDM tools also require advanced data mining skills, limiting the stakeholders who are able to engage in and benefit from it (Kalita et al., 2025).</p>
+        </div>
+      </div>
+
+      <!-- ── 2.2 ── -->
+      <div style="margin-bottom:2.5rem">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
+          <div style="font-size:.7rem;font-weight:700;color:#a855f7;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">2.2</div>
+          <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">The Role of Socio-Economic and Demographic Variables</div>
+        </div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">Debates in existing predictive studies on student dropout often revolve around the role of socio-economic and demographic variables. A recurring finding across the literature is that pre-entry socio-demographic data alone is insufficient for accurate dropout prediction. Goren et al. (2024), for instance, report AUC scores of only 0.61–0.63 when relying exclusively on such variables, with meaningful accuracy gains achieved only when combined with learning management system (LMS) behavioral data. Similarly, Alhazmi &amp; Sheneamer (2023) and Gonzalez-Nucamendi et al. (2023) identify first-year academic performance and entry scores as the strongest predictors, with socioeconomic and demographic variables playing a secondary or deferred role. In other words, Gonzalez-Nucamendi et al. explicitly relegate socioeconomic integration to future work due to the complexity of incorporation. Meanwhile, Gutierrez-Pachas et al. (2023), in a Latin American context, find that equity and socioeconomic variables show surprisingly weak correlations with dropout compared to academic ones.</p>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">The most recent and systematic contribution to this unstable relationship is from Kocsis &amp; Molnár (2025), whose review finds that while GPA and earned credits are consistent predictors across the literature, age and family background, including parental education and socioeconomic status, produce contradictory results across studies. These tensions, however, are not uniformly reported in the literature.</p>
+        <div style="border-left:3px solid rgba(168,85,247,.45);padding:.85rem 1.1rem;margin:1.25rem 0;background:rgba(168,85,247,.05);border-radius:0 8px 8px 0">
+          <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Realinho et al. (2022), working with a Portuguese Polytechnic Institute dataset closely comparable to ours, found that socioeconomic conditions and demographic variables are highly relevant to student success, with female students and those receiving financial aid showing significantly higher success rates. This contribution suggests that the predictive value of socio-demographic variables may be highly context-dependent, shaped by local institutional structures and the composition of the student population under study.</p>
+        </div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">Pristyanto et al. (2018) highlight how imbalanced datasets (understood here as the "uneven distribution of cases across different classes") complicate the construction and deployment of precise predictive models, as most models are built under the assumption of class distribution (cited in Kalita et al., 2025, p. 14). Following Kalita et al. (2025), researchers' approaches to imbalance learning can be sorted into four groups (with the ability to combine approaches): data resampling-based methods, cost-sensitive methods, classifier ensemble-based methods, and algorithm-based methods. For instance, Thai-Nghe et al. (2009) address this through over-sampling and cost-sensitive learning, while Al-Ashoor &amp; Abdullah (2022) find ensemble methods particularly effective.</p>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Yet, much of the literature concerning EDM, especially in cases of class imbalance, looks at technical considerations and the varying accuracy and suitability of different models to the data rather than broader socio-ethical or bias considerations. Yousef et al. (2025), examining university admissions in Yemen, represent a partial exception, noting that traditional evaluation metrics can exacerbate fairness issues particularly in developing-country contexts. More commonly, however, socio-demographic variables are included as predictive features without interrogating what their inclusion implies: that group membership is treated as a stable predictor of underperformance rather than as a proxy for structurally unequal conditions.</p>
+      </div>
+
+      <!-- ── 2.3 ── -->
+      <div style="margin-bottom:0">
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
+          <div style="font-size:.7rem;font-weight:700;color:#f59e0b;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">2.3</div>
+          <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">Algorithmic Fairness and the Risk of Encoded Bias in Educational Datasets</div>
+        </div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">The predominantly technical orientation of EDM research obscures the extent to which the datasets themselves encode and reproduce social inequalities. However, as Baker &amp; Hawn (2022) note, 'algorithmic bias' in education encompasses a range of phenomena, from statistical errors in measurement to systematic skew in model outputs that produce disparate impacts across groups. Some researchers maintain a distinction between 'bias', in its statistical sense, and 'unfairness', for socially objectionable outcomes (Barocas et al., 2019). Others apply a broader definition in which bias refers to any "unintended or potentially harmful" properties of data that lead to unfavorable outcomes for specific groups (Suresh &amp; Guttag, 2019).</p>
+        <div style="background:#161b22;border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:1.1rem 1.3rem;margin:1.25rem 0">
+          <div style="font-size:.68rem;color:#8b949e;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem">Working definition — Friedman &amp; Nissenbaum (1996)</div>
+          <p style="font-size:.875rem;font-style:italic;line-height:1.75;color:#f59e0b;margin:0">"Biased systems are those that systematically and unfairly discriminate against individuals or groups of individuals in favor of others."</p>
+        </div>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">For the purpose of this paper, we will follow Friedman and Nissenbaum (1996) in arguing that biased systems are those that "systematically and unfairly discriminate against individuals or groups of individuals in favor of others". In this light, class imbalance is not only a modelling challenge but a reflection of who is over- or under-represented in institutional records, and whose educational trajectories are legible to administrative systems in the first place (Kearns et al., 2020).</p>
+        <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">Several frameworks have emerged for auditing bias in datasets and predictive systems. Fairness-aware machine learning, for instance, distinguishes between individual fairness and group fairness (Dwork et al., 2011). More critical approaches, drawing on feminist data studies and critical algorithm studies, argue that bias is not merely a technical artefact to be corrected but a structural feature of data practices embedded in institutional and political contexts (D'Ignazio &amp; Klein, 2020; Eubanks, 2018). From this perspective, auditing a dataset is not simply a matter of statistical correction but requires situating the data within the social conditions of its production, including who funded it, what outcomes it was designed to optimize, and whose knowledge it treats as 'ground truth'.</p>
+        <div style="border-left:3px solid rgba(245,158,11,.45);padding:.85rem 1.1rem;margin:1.25rem 0;background:rgba(245,158,11,.04);border-radius:0 8px 8px 0">
+          <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Applied to educational data, this means examining how variables like parental education, address, and sex function not merely as neutral features but as proxies that may encode cumulative disadvantage. It is this approach our study takes in order to examine how the student achievement data from two Portuguese secondary schools represents, and potentially distorts, the populations it claims to describe.</p>
+        </div>
+      </div>
+
     </div>
-  </div>
-
-  <!-- Intro paragraph -->
-  <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 2rem">The following section gives an overview of the landscape of Educational Data Mining (EDM) and the debates around socio-economic and demographic variables in predicting student performance. It goes on to examine how the field's predominantly technical orientation has left a gap in critical bias analysis, a gap this study aims to address. These different streams of literature help frame our methodology and understanding of the dataset and educational sector as inherently entrenched in structural inequalities that data alone cannot neutralise.</p>
-
-  <!-- ── 2.1 ── -->
-  <div style="margin-bottom:2.5rem">
-    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
-      <div style="font-size:.7rem;font-weight:700;color:#3b82f6;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">2.1</div>
-      <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">Landscape of Educational Data Mining (EDM) and Student Dropout</div>
-    </div>
-
-    <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">As noted by Kalita et al. (2025) in their systematic review, the rapid digitization of educational institutions has led institutions and research to increasingly rely on data-driven strategies, in hopes of enhancing learning experiences and institutional efficiency. Catalyzed by adoption of e-learning tools during COVID-19 in 2020 and the availability of vast amounts of educational data, there was an increase in studies carrying out Educational Data Mining (EDM, Ling et al., 2023). EDM is an interdisciplinary field, emerging in the 1990s, combining tools and techniques from statistics, data mining, and machine learning to find new relationships and information in big datasets (Zorić, 2020). It usually involves four iterative phases of problem definition, data preparation and gathering, modelling and evaluation, and deployment. The underlying assumption of EDM is that valuable information can be extracted from the data to improve the decision-making processes and student experience in education (Gaftandzhieva et al., 2023).</p>
-
-    <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">Previous literature has, for instance, used EDM to identify unusual patterns in student behavior (Juhaňák et al., 2017), sort students into groups (Triayudi & Widyarto, 2021), predict student performance (Zorić, 2020), and predict student dropout rate (Agrusti et al., 2019). Though originating in the 1970s with Tinto (1975), the student dropout problem has gained prevalence in EDM due to high dropout rates in the US (Aulck et al., 2019) and increased financial strain in Western institutions (Garača & Čukušić, 2010). Various studies have used machine learning methods, primarily on institutional data for availability concerns, to attempt to more efficiently predict students at-risk of dropout.</p>
-
-    <div style="border-left:3px solid rgba(59,130,246,.45);padding:.85rem 1.1rem;margin:1.25rem 0;background:rgba(59,130,246,.05);border-radius:0 8px 8px 0">
-      <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0">Yet, Kalita et al. (2025) also accurately highlight that EDM is intertwined with issues in educational data ethics (Guan et al., 2023), privacy, and security (Zorić, 2020). Current EDM tools also require advanced data mining skills, limiting the stakeholders who are able to engage in and benefit from it (Kalita et al., 2025).</p>
-    </div>
-  </div>
-
-  <!-- ── 2.2 ── -->
-  <div style="margin-bottom:2.5rem">
-    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem">
-      <div style="font-size:.7rem;font-weight:700;color:#a855f7;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.25);border-radius:6px;padding:.2rem .55rem;white-space:nowrap;flex-shrink:0">2.2</div>
-      <div style="font-size:1rem;font-weight:700;color:#e6edf3;line-height:1.3">The Role of Socio-Economic and Demographic Variables</div>
-    </div>
-
-    <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">Debates in existing predictive studies on student dropout often revolve around the role of socio-economic and demographic variables. A recurring finding across the literature is that pre-entry socio-demographic data alone is insufficient for accurate dropout prediction. Goren et al. (2024), for instance, report AUC scores of only 0.61–0.63 when relying exclusively on such variables, with meaningful accuracy gains achieved only when combined with learning management system (LMS) behavioral data. Similarly, Alhazmi & Sheneamer (2023) and Gonzalez-Nucamendi et al. (2023) identify first-year academic performance and entry scores as the strongest predictors, with socioeconomic and demographic variables playing a secondary or deferred role. In other words, Gonzalez-Nucamendi et al. explicitly relegate socioeconomic integration to future work due to the complexity of incorporation. Meanwhile, Gutierrez-Pachas et al. (2023), in a Latin American context, find that equity and socioeconomic variables show surprisingly weak correlations with dropout compared to academic ones.</p>
-
-    <p style="font-size:.875rem;line-height:1.85;color:#c9d1d9;margin:0 0 1rem">The most recent and systematic contribution to this unstable
 
     <!-- ═══════════ 3. METHODOLOGY ═══════════ -->
     <div class="section" id="methodo">
