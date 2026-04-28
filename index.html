@@ -269,6 +269,10 @@
 
       <!-- TAB: FPR -->
       <div id="tab-fpr" class="tab-content">
+        <div class="card mb" style="border-color:rgba(59,130,246,.15);background:rgba(59,130,246,.02)">
+          <div class="finding">Our bias analysis focuses on the False Positive Rates disparities across different socio-demographical variables. In other words, we are trying to see 
+            if our models systematically predict that some students with certain characteristics are to drop out, even though they don’t.</div>
+        </div>
         <div class="card mb">
           <div class="clabel">False Positive Rate — Definition</div>
           <div class="formula-box">FPR = FP / (FP + TN)</div>
@@ -282,16 +286,14 @@
           <div class="col">
             <div class="card" id="callout-tuition" style="border-color:rgba(245,158,11,.4)"></div>
             <div class="card" id="callout-debtor"  style="border-color:rgba(248,113,113,.4)"></div>
-            <div class="card" style="padding:.85rem">
-              <div style="font-size:.7rem;color:#8b949e;margin-bottom:.5rem">Baseline — Gender (Male)</div>
-              <div class="bline">
-                <div class="bline-item"><div class="bline-val">12.6%</div><div class="bline-model">GB</div></div>
-                <div class="bline-item"><div class="bline-val">11.4%</div><div class="bline-model">LR</div></div>
-                <div class="bline-item"><div class="bline-val">17.1%</div><div class="bline-model">MLP</div></div>
-                <div class="bline-item"><div class="bline-val">9.1%</div><div class="bline-model">RF</div></div>
-              </div>
-            </div>
+    
           </div>
+        </div>
+        <div class="card" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03)">
+          
+          <div class="finding">Preliminary FPR disparity analysis shows that, across all these variables, some disparities exist. For instance, and as shown in the following table, male students are more subject to miscategorization, as well as non-displaced students, 
+            non-scholarship holders, etc… However, <strong>two variables stand out : indebted students, and students whose tuition fees aren't up to date.</strong> Depending on the model, from a quarter up to a third of indebted students are miscategorized, and from 
+            a third to two thirds of students with invalid tuition fees are miscategorized. To understand what's going on here, let's have a look at how our models make their decisions.</div>
         </div>
         <div class="card mb">
           <div class="clabel">Complete FPR Table — All Variables</div>
@@ -304,12 +306,7 @@
             <tbody id="fpr-tbody"></tbody></table>
           </div>
         </div>
-        <div class="card" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03)">
-          
-          <div class="finding">Preliminary FPR disparity analysis shows that, across all these variables, some disparities exist. For instance, and as shown in the following table, male students are more subject to miscategorization, as well as non-displaced students, 
-            non-scholarship holders, etc… However, <strong>two variables stand out : indebted students, and students whose tuition fees aren't up to date.</strong> Depending on the model, from a quarter up to a third of indebted students are miscategorized, and from 
-            a third to two thirds of students with invalid tuition fees are miscategorized. To understand what's going on here, let's have a look at how our models make their decisions.</div>
-        </div>
+        
       </div>
 
            <!-- TAB: DENSITY -->
