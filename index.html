@@ -224,7 +224,7 @@
         <div class="section-num">04</div>
         <div>
           <div class="section-title">Results</div>
-          <div class="section-sub">Model performance · FPR disparities · Density &amp; threshold · Feature importance · Correlations</div>
+          <div class="section-sub">Model performance · FPR disparities · Dcision making · Feature importance · Correlations</div>
         </div>
       </div>
 
@@ -232,7 +232,7 @@
       <div class="tabs">
         <button class="tab-btn active" onclick="showTab('performance',this)">📊 Model Performance</button>
         <button class="tab-btn" onclick="showTab('fpr',this)">⚠️ FPR Disparities</button>
-        <button class="tab-btn" onclick="showTab('density',this)">📉 Density &amp; Threshold</button>
+        <button class="tab-btn" onclick="showTab('density',this)">📉 Decision making </button>
         <button class="tab-btn" onclick="showTab('features',this)">🔍 Feature Importance</button>
         <button class="tab-btn" onclick="showTab('corr',this)">📈 Correlations</button>
       </div>
@@ -303,7 +303,7 @@
           
           <div class="finding">Preliminary FPR disparity analysis shows that, across all these variables, some disparities exist. For instance, and as shown in the following table, male students are more subject to miscategorization, as well as non-displaced students, 
             non-scholarship holders, etc… However, <strong>two variables stand out : indebted students, and students whose tuition fees aren't up to date.</strong> Depending on the model, from a quarter up to a third of indebted students are miscategorized, and from 
-            a third to two thirds of students with invalid tuition fees are miscategorized. To understand what's going on here, let's have a look at how our models make their decisions.</div>
+            a third to two thirds of students with invalid tuition fees are miscategorized.</div>
         </div>
         <div class="card mb">
           <div class="clabel">Complete FPR Table — All Variables</div>
@@ -315,6 +315,9 @@
             </tr></thead>
             <tbody id="fpr-tbody"></tbody></table>
           </div>
+        </div>
+        <div class="card mb" style="border-color:rgba(59,130,246,.15);background:rgba(59,130,246,.02)">
+          <div class="finding">To understand how these disparities arise, let's have a look at how our models make their decision on wether a student is going to drop out.</div>
         </div>
         
       </div>
