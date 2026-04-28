@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Decoding Biases — Student Dropout Audit</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #0d1117; color: #e6edf3; font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #161b22; }
+    ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,.95); backdrop-filter: blur(8px);
+      border-bottom: 1px solid #21262d;
+      display: flex; align-items: center; gap: 0; padding: 0 1.5rem;
+      overflow-x: auto;
+    }
+    .topnav-brand {
+      font-size: .78rem; font-weight: 700; color: #f59e0b;
+      white-space: nowrap; padding: .9rem 1rem .9rem 0;
+      border-right: 1px solid #21262d; margin-right: .5rem; flex-shrink: 0;
+    }
+    .topnav a {
+      color: #8b949e; text-decoration: none; font-size: .75rem;
+      padding: .9rem .75rem; white-space: nowrap; flex-shrink: 0;
+      border-bottom: 2px solid transparent; transition: color .15s;
+    }
+    .topnav a:hover { color: #e6edf3; }
+    .topnav a.active { color: #f59e0b; border-bottom-color: #f59e0b; font-weight: 600; }
+
+    /* ── PAGE ── */
+    .page { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+    /* ── COVER ── */
+    .cover {
+      text-align: center; padding: 4rem 1rem 3.5rem;
+      border-bottom: 1px solid #21262d; margin-bottom: 0;
+    }
+    .cover-tag { font-size: .72rem; color: #f59e0b; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .75rem; }
+    .cover h1 { font-size: 2rem; font-weight: 800; line-height: 1.25; margin-bottom: .75rem; }
+    .cover h1 span { color: #f59e0b; }
+    .cover-authors { font-size: .82rem; color: #8b949e; margin-bottom: .5rem; }
+    .cover-meta { font-size: .75rem; color: #30363d; }
+    .cover-meta span { color: #8b949e; margin: 0 .4rem; }
+
+    /* ── SECTION WRAPPER ── */
+    .section { padding: 4rem 0; border-bottom: 1px solid #21262d; }
+    .section:last-child { border-bottom: none; }
+
+    .section-header { display: flex; align-items: flex-start; gap: .85rem; margin-bottom: 2rem; }
+    .section-num {
+      font-size: .72rem; font-weight: 700; color: #f59e0b;
+      background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.25);
+      border-radius: 6px; padding: .25rem .6rem; white-space: nowrap; flex-shrink: 0; margin-top: .15rem;
+    }
+    .section-title { font-size: 1.35rem; font-weight: 700; line-height: 1.3; }
+    .section-sub { font-size: .82rem; color: #8b949e; margin-top: .3rem; }
+
+    /* ── PLACEHOLDER ── */
+    .placeholder {
+      border: 1.5px dashed #21262d; border-radius: 10px;
+      padding: 2.5rem 2rem; text-align: center;
+      color: #30363d; font-size: .82rem; line-height: 1.7;
+    }
+    .placeholder strong { color: #8b949e; display: block; margin-bottom: .35rem; font-size: .85rem; }
+
+    /* ── RESULTS TABS ── */
+    .tabs { display: flex; gap: .2rem; border-bottom: 1px solid #21262d; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab-btn { padding: .45rem .9rem; background: transparent; border: none; border-bottom: 2px solid transparent; color: #8b949e; font-family: inherit; font-size: .78rem; font-weight: 400; cursor: pointer; margin-bottom: -1px; transition: color .15s; }
+    .tab-btn.active { color: #f59e0b; border-bottom-color: #f59e0b; font-weight: 700; }
+    .tab-btn:hover:not(.active) { color: #e6edf3; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── CARDS ── */
+    .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 1.1rem; }
+    .clabel { font-size: .7rem; color: #8b949e; text-transform: uppercase; letter-spacing: .07em; margin-bottom: .85rem; }
+
+    /* ── GRIDS ── */
+    .g11 { display: grid; grid-template-columns: 1.1fr .9fr; gap: .85rem; }
+    .g21 { display: grid; grid-template-columns: 1.2fr .8fr; gap: .85rem; }
+    .g12 { display: grid; grid-template-columns: 1.3fr .7fr; gap: .85rem; }
+    .g2  { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; }
+    .g4  { display: grid; grid-template-columns: repeat(4,1fr); gap: .75rem; }
+    .mb  { margin-bottom: .85rem; }
+    .col { display: flex; flex-direction: column; gap: .65rem; }
+
+    /* ── TABLES ── */
+    table { width: 100%; border-collapse: collapse; }
+    th { font-weight: 500; color: #8b949e; font-size: .75rem; padding-bottom: .5rem; border-bottom: 1px solid #21262d; }
+    th.l, td.l { text-align: left; }
+    th.r, td.r { text-align: right; }
+    td { font-size: .78rem; padding: .45rem .1rem; border-bottom: 1px solid #21262d; color: #e6edf3; }
+    td.mono { font-family: monospace; }
+    td.dim  { color: #8b949e; }
+    tr.hl td { background: rgba(245,158,11,.05); }
+    .badge { display: inline-block; padding: .1rem .4rem; border-radius: 4px; font-size: .68rem; font-weight: 700; margin-right: .4rem; }
+
+    /* ── BARS ── */
+    .mbar { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
+    .mbar-track { flex: 1; height: 5px; background: #21262d; border-radius: 3px; }
+    .mbar-fill  { height: 100%; border-radius: 3px; }
+    .mbar-val   { font-family: monospace; font-size: .75rem; width: 3rem; text-align: right; }
+    .cbar-track { height: 4px; background: #21262d; border-radius: 2px; }
+    .cbar-fill  { height: 100%; border-radius: 2px; }
+
+    /* ── BASELINE ── */
+    .bline { display: flex; justify-content: space-around; }
+    .bline-item { text-align: center; }
+    .bline-val   { font-size: .95rem; font-weight: 700; font-family: monospace; }
+    .bline-model { font-size: .65rem; color: #8b949e; }
+
+    /* ── FEATURE ROWS ── */
+    .feat-row { display: flex; align-items: center; gap: .55rem; margin-bottom: .65rem; }
+    .feat-rank { width: 1.3rem; height: 1.3rem; background: #21262d; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .62rem; color: #8b949e; flex-shrink: 0; }
+
+    /* ── FORMULA ── */
+    .formula-box { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: .65rem 1.1rem; font-family: monospace; font-size: .9rem; color: #f59e0b; display: inline-block; margin-bottom: .85rem; }
+
+    /* ── VERBATIM FINDING ── */
+    .finding { font-size: .875rem; line-height: 1.8; color: #c9d1d9; }
+    .finding strong { color: #f59e0b; font-weight: 600; }
+
+    canvas { display: block; }
+
+    /* ── FOOTER ── */
+    .footer { text-align: center; padding: 2rem; border-top: 1px solid #21262d; color: #30363d; font-size: .72rem; }
+    .footer span { color: #8b949e; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="topnav-brand">Decoding Biases</div>
+    <a href="#intro">1. Introduction</a>
+    <a href="#litreview">2. Lit. Review</a>
+    <a href="#methodo">3. Methodology</a>
+    <a href="#results">4. Results</a>
+    <a href="#discussion">5. Discussion</a>
+    <a href="#conclusion">6. Conclusion</a>
+    <a href="#biblio">7. Bibliography</a>
+  </nav>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-tag">Decoding Biases · Final Project</div>
+    <h1>Auditing a Student Dropout<br>Prediction <span>Dataset</span></h1>
+    <div class="cover-authors">Boury · Chaudron · Haland · Hege · Lettmann</div>
+    <div class="cover-meta">
+      <span>UCI Machine Learning Repository</span>
+      <span>·</span>
+      <span>Two Portuguese Secondary Schools</span>
+      <span>·</span>
+      <span>SATDAP Programme</span>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- ═══════════ 1. INTRODUCTION ═══════════ -->
+    <div class="section" id="intro">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div>
+          <div class="section-title">Introduction</div>
+        </div>
+      </div>
+      <div class="placeholder">
+        <strong>Text coming soon</strong>
+        This section will present the project context, the SATDAP programme, the research question, and the scope of the audit.
+      </div>
+    </div>
+
+    <!-- ═══════════ 2. LITERATURE REVIEW ═══════════ -->
+    <div class="section" id="litreview">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div>
+          <div class="section-title">Literature Review</div>
+          <div class="section-sub">EDM · Socio-economic variables · Algorithmic fairness</div>
+        </div>
+      </div>
+      <div class="placeholder">
+        <strong>Text coming soon</strong>
+        This section will cover: (2.1) Landscape of Educational Data Mining and Student Dropout · (2.2) The Role of Socio-Economic and Demographic Variables · (2.3) Algorithmic Fairness and the Risk of Encoded Bias in Educational Datasets.
+      </div>
+    </div>
+
+    <!-- ═══════════ 3. METHODOLOGY ═══════════ -->
+    <div class="section" id="methodo">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div>
+          <div class="section-title">Methodology</div>
+          <div class="section-sub">Data collection · Model training · Bias measurement · Feature importance · Correlation analysis</div>
+        </div>
+      </div>
+      <div class="placeholder">
+        <strong>Text coming soon</strong>
+        This section will cover: (3.1) Data collection · (3.2) Model training · (3.3) Bias measurement: False Positive Rate Disparities · (3.4) Feature importance analysis · (3.5) Correlation analysis: Training vs. Testing Set.
+      </div>
+    </div>
+
+    <!-- ═══════════ 4. RESULTS ═══════════ -->
+    <div class="section" id="results">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div>
+          <div class="section-title">Results</div>
+          <div class="section-sub">Model performance · FPR disparities · Density &amp; threshold · Feature importance · Correlations</div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('performance',this)">📊 Model Performance</button>
+        <button class="tab-btn" onclick="showTab('fpr',this)">⚠️ FPR Disparities</button>
+        <button class="tab-btn" onclick="showTab('density',this)">📉 Density &amp; Threshold</button>
+        <button class="tab-btn" onclick="showTab('features',this)">🔍 Feature Importance</button>
+        <button class="tab-btn" onclick="showTab('corr',this)">📈 Correlations</button>
+      </div>
+
+      <!-- TAB: PERFORMANCE -->
+      <div id="tab-performance" class="tab-content active">
+        <div class="g11 mb">
+          <div class="card">
+            <div class="clabel">Performance Metrics</div>
+            <table><thead><tr>
+              <th class="l">Model</th>
+              <th class="r">Accuracy</th><th class="r">Precision</th><th class="r">Recall</th><th class="r">AUC</th>
+            </tr></thead>
+            <tbody id="perf-tbody"></tbody></table>
+          </div>
+          <div class="card">
+            <div class="clabel">Radar Comparison (scaled 65–95%)</div>
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+        <div class="g4 mb" id="minibars"></div>
+        <div class="card" style="border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.03)">
+
+          <div class="finding">The metrics are satisfactory, displaying similar precisions, recalls and area under the curve values to the ones present in the literature. Meaning our models could technically be production ready, enabling a pertinent bias analysis.</div>
+        </div>
+      </div>
+
+      <!-- TAB: FPR -->
+      <div id="tab-fpr" class="tab-content">
+        <div class="card mb">
+          <div class="clabel">False Positive Rate — Definition</div>
+          <div class="formula-box">FPR = FP / (FP + TN)</div>
+          <p style="color:#8b949e;font-size:.82rem">FP = false positives · TN = true negatives · Share of miscategorized students among non-dropouts</p>
+        </div>
+        <div class="g21 mb">
+          <div class="card">
+            <div class="clabel">FPR by Group &amp; Model</div>
+            <canvas id="fprChart"></canvas>
+          </div>
+          <div class="col">
+            <div class="card" id="callout-tuition" style="border-color:rgba(245,158,11,.4)"></div>
+            <div class="card" id="callout-debtor"  style="border-color:rgba(248,113,113,.4)"></div>
+            <div class="card" style="padding:.85rem">
+              <div style="font-size:.7rem;color:#8b949e;margin-bottom:.5rem">Baseline — Gender (Male)</div>
+              <div class="bline">
+                <div class="bline-item"><div class="bline-val">12.6%</div><div class="bline-model">GB</div></div>
+                <div class="bline-item"><div class="bline-val">11.4%</div><div class="bline-model">LR</div></div>
+                <div class="bline-item"><div class="bline-val">17.1%</div><div class="bline-model">MLP</div></div>
+                <div class="bline-item"><div class="bline-val">9.1%</div><div class="bline-model">RF</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb">
+          <div class="clabel">Complete FPR Table — All Variables</div>
+          <div style="overflow-x:auto">
+            <table><thead><tr>
+              <th class="l">Variable</th><th class="l">Modality</th><th class="r">Share</th>
+              <th class="r">Gradient Boosting</th><th class="r">Logistic Regression</th>
+              <th class="r">MLP</th><th class="r">Random Forest</th>
+            </tr></thead>
+            <tbody id="fpr-tbody"></tbody></table>
+          </div>
+        </div>
+        <div class="card" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03)">
+          
+          <div class="finding">Preliminary FPR disparity analysis shows that, across all these variables, some disparities exist. For instance, and as shown in the following table, male students are more subject to miscategorization, as well as non-displaced students, non-scholarship holders, etc… However, <strong>two variables stand out : indebted students, and students whose tuition fees aren't up to date.</strong> Depending on the model, from a quarter up to a third of indebted students are miscategorized, and from a third to two thirds of students with invalid tuition fees are miscategorized. To understand what's going on here, let's have a look at how our models make their decisions.</div>
+        </div>
+      </div>
+
+      <!-- TAB: DENSITY -->
+      <div id="tab-density" class="tab-content">
+        <div class="card mb" style="border-color:rgba(59,130,246,.25);background:rgba(59,130,246,.03)">
+          
+          <div class="finding">What we see on those graphs is that, except for the Multiple-Layer-Perceptron, all models miscategorized students they are relatively unsure with. A lot of the miscategorization disparities happen with students whose dropout probabilities are between 0.5 and 0.8. With a decision threshold set at 0.5, the models still categorize these students as dropouts, even if they are not utterly convinced they are in fact going to drop out. A simple solution to this problem is to raise the decision threshold to 0.8 to cut miscategorization, and allow for students to be labeled as "dropout" only when the probability is high.</div>
+        </div>
+        <div class="card mb" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03)">
+          
+          <div class="finding">What we see here is that not only do our models miscategorize financially unstable students a whole lot more than the regular students, but they are also very much sure about their predictions. Even with a higher decision threshold, students would still be miscategorized. To push this analysis a bit further, let's have a look at the FPR decay rate for each model, which is the FPR value for different decision thresholds.</div>
+        </div>
+        <div class="card mb">
+          <div class="clabel">FPR Decay — Effect of raising the decision threshold (Gradient Boosting)</div>
+          <canvas id="decayChart" height="280"></canvas>
+        </div>
+        <div class="card" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03)">
+          
+          <div class="finding">What appears here is that, except for the random forest model (for reasons we will see later on), the difference in FPR decay rates show that, even for higher decision thresholds, <strong>financially unstable students still get miscategorized 5 to ten times more than students with other characteristics.</strong></div>
+        </div>
+      </div>
+
+      <!-- TAB: FEATURES -->
+      <div id="tab-features" class="tab-content">
+        <div class="g12 mb">
+          <div class="card">
+            <div class="clabel">Feature Importance (Permutation) — <span style="color:#f59e0b">★ financial variables</span></div>
+            <canvas id="featChart"></canvas>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="clabel">Top 5 Predictors</div>
+              <div id="top5"></div>
+            </div>
+            <div class="card" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03)">
+              
+              <div class="finding">What appears here is that <strong>the top five predictors are grade related variables for both semesters of term, followed by the state of tuition fees.</strong> Grades are positively correlated with not dropping out, same thing as having up to date tuition fees.</div>
+            </div>
+          </div>
+        </div>
+        <p style="color:#8b949e;font-size:.82rem">No, let's see how grades are distributed and correlated with our financial features between our training and testing dataset.</p>
+      </div>
+
+      <!-- TAB: CORRELATIONS -->
+      <div id="tab-corr" class="tab-content">
+        <div class="g2 mb">
+          <div class="card" id="corr-debtor"></div>
+          <div class="card" id="corr-tuition"></div>
+        </div>
+        <div class="card" style="border-color:rgba(245,158,11,.2);background:rgba(245,158,11,.03)">
+          
+          <div class="finding">
+            What we see here is that, especially for the "tuition fees" variable, students in the training set tend to have lower grades and lower course approval than the students in the testing set. Further correlation analysis supports this claim.
+            <br><br>
+            Essentially, <strong>models learn two correlations in the training phase : grades predict dropout, and financially unstable students tend to have lower grades and to drop out more consequently.</strong> However, in the testing set, those correlations are not present as much, hence <strong>the models punish students based on correlations learned in training that are not found in testing.</strong> This is less of the case for the random forest model because these types of models are built to overfit less on training data.
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end results section -->
+
+    <!-- ═══════════ 5. DISCUSSION ═══════════ -->
+    <div class="section" id="discussion">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div>
+          <div class="section-title">Discussion</div>
+        </div>
+      </div>
+      <div class="placeholder">
+        <strong>Text coming soon</strong>
+        This section will interpret the results in light of the research question, connect findings to broader literature on algorithmic fairness, and address study limitations.
+      </div>
+    </div>
+
+    <!-- ═══════════ 6. CONCLUSION ═══════════ -->
+    <div class="section" id="conclusion">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div>
+          <div class="section-title">Conclusion</div>
+        </div>
+      </div>
+      <div class="placeholder">
+        <strong>Text coming soon</strong>
+        This section will summarise the key findings, reflect on the ethical implications of using ML to predict student dropout, and outline directions for future research.
+      </div>
+    </div>
+
+    <!-- ═══════════ 7. BIBLIOGRAPHY ═══════════ -->
+    <div class="section" id="biblio">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div>
+          <div class="section-title">Bibliography</div>
+        </div>
+      </div>
+      <div class="placeholder">
+        <strong>Text coming soon</strong>
+        Full bibliography will be added here.
+      </div>
+    </div>
+
+  </div><!-- end page -->
+
+  <div class="footer">
+    Boury · Chaudron · Haland · Hege · Lettmann &nbsp;·&nbsp; <span>UCI Student Performance Dataset · Portugal</span>
+  </div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+const C = { GB:'#3b82f6', LR:'#22c55e', MLP:'#a855f7', RF:'#f59e0b', amber:'#f59e0b', rose:'#f87171', blue:'#3b82f6', muted:'#8b949e', text:'#e6edf3', border:'#21262d' };
+const MC = [C.GB, C.LR, C.MLP, C.RF];
+
+const models = [
+  { model:'Gradient Boosting',  short:'GB',  accuracy:86.8, precision:82.8, recall:71.8, auc:90.9 },
+  { model:'Logistic Regression',short:'LR',  accuracy:87.8, precision:85.0, recall:73.3, auc:91.4 },
+  { model:'MLP',                short:'MLP', accuracy:85.2, precision:77.2, recall:73.7, auc:89.9 },
+  { model:'Random Forest',      short:'RF',  accuracy:86.8, precision:86.0, recall:67.9, auc:91.0 },
+];
+
+const fprGroups = [
+  { name:'Tuition fees (No)',  GB:64.3, LR:35.7, MLP:64.3, RF:42.9 },
+  { name:'Debtor (Yes)',       GB:28.6, LR:34.3, MLP:34.3, RF:25.7 },
+  { name:'Father Serv./Sales', GB:14.3, LR:9.5,  MLP:15.9, RF:12.7 },
+  { name:'Gender (Male)',      GB:12.6, LR:11.4, MLP:17.1, RF:9.1  },
+  { name:'Displaced (No)',     GB:9.9,  LR:7.3,  MLP:12.4, RF:6.0  },
+  { name:'Scholarship (No)',   GB:9.1,  LR:7.9,  MLP:12.6, RF:6.7  },
+  { name:'Gender (Female)',    GB:4.1,  LR:3.4,  MLP:6.5,  RF:3.1  },
+  { name:'Scholarship (Yes)',  GB:1.1,  LR:1.1,  MLP:3.2,  RF:1.1  },
+];
+
+const features = [
+  { f:'Gender',                         v:1.08,  fin:false },
+  { f:'Scholarship holder',             v:1.35,  fin:false },
+  { f:'GDP',                            v:1.65,  fin:false },
+  { f:'★ Debtor',                      v:1.83,  fin:true  },
+  { f:'Unemployment rate',              v:1.83,  fin:false },
+  { f:'Previous qualification (grade)', v:2.82,  fin:false },
+  { f:'Admission grade',                v:3.06,  fin:false },
+  { f:'1st sem (evaluations)',          v:3.36,  fin:false },
+  { f:'Age at enrollment',              v:4.00,  fin:false },
+  { f:'2nd sem (evaluations)',          v:4.13,  fin:false },
+  { f:'★ Tuition fees up to date',     v:6.72,  fin:true  },
+  { f:'1st sem (grade)',                v:7.06,  fin:false },
+  { f:'1st sem (approved)',             v:7.96,  fin:false },
+  { f:'2nd sem (grade)',                v:13.19, fin:false },
+  { f:'2nd sem (approved)',             v:15.09, fin:false },
+];
+
+const fullFpr = [
+  { variable:'Debtor',               modality:'No',              share:'88.4%', GB:5.2,  LR:3.9,  MLP:8.1,  RF:3.6,  flag:false },
+  { variable:'Debtor',               modality:'Yes',             share:'11.6%', GB:28.6, LR:34.3, MLP:34.3, RF:25.7, flag:true  },
+  { variable:'Displaced',            modality:'No',              share:'43.7%', GB:9.9,  LR:7.3,  MLP:12.4, RF:6.0,  flag:false },
+  { variable:'Displaced',            modality:'Yes',             share:'56.3%', GB:4.5,  LR:4.7,  MLP:7.8,  RF:4.2,  flag:false },
+  { variable:'Educ. special needs',  modality:'No',              share:'98.4%', GB:6.4,  LR:5.3,  MLP:9.5,  RF:5.0,  flag:false },
+  { variable:'Father Occupation',    modality:'Service/Sales',   share:'10.5%', GB:14.3, LR:9.5,  MLP:15.9, RF:12.7, flag:false },
+  { variable:'Father Occupation',    modality:'Skilled Trades',  share:'15.7%', GB:3.0,  LR:3.0,  MLP:6.0,  RF:4.0,  flag:false },
+  { variable:'Father Occupation',    modality:'Unskilled/Elem.', share:'23.9%', GB:8.3,  LR:6.9,  MLP:12.4, RF:4.8,  flag:false },
+  { variable:'Father qualification', modality:'Basic Education', share:'66.7%', GB:5.2,  LR:4.4,  MLP:8.4,  RF:3.9,  flag:false },
+  { variable:'Father qualification', modality:'Secondary',       share:'24.8%', GB:10.2, LR:7.5,  MLP:12.9, RF:7.5,  flag:false },
+  { variable:'Gender',               modality:'Female',          share:'63.8%', GB:4.1,  LR:3.4,  MLP:6.5,  RF:3.1,  flag:false },
+  { variable:'Gender',               modality:'Male',            share:'36.2%', GB:12.6, LR:11.4, MLP:17.1, RF:9.1,  flag:false },
+  { variable:'Mother Occupation',    modality:'Administrative',  share:'19.0%', GB:6.1,  LR:2.6,  MLP:10.5, RF:4.4,  flag:false },
+  { variable:'Mother Occupation',    modality:'Service/Sales',   share:'11.0%', GB:2.9,  LR:4.3,  MLP:11.4, RF:4.3,  flag:false },
+  { variable:'Mother Occupation',    modality:'Unskilled/Elem.', share:'39.8%', GB:6.9,  LR:6.1,  MLP:9.5,  RF:4.3,  flag:false },
+  { variable:'Mother qualification', modality:'Basic Education', share:'58.8%', GB:7.5,  LR:6.1,  MLP:9.5,  RF:5.8,  flag:false },
+  { variable:'Mother qualification', modality:'Secondary',       share:'27.2%', GB:3.1,  LR:2.5,  MLP:9.4,  RF:1.9,  flag:false },
+  { variable:'Mother qualification', modality:'Undergraduate',   share:'11.6%', GB:8.5,  LR:8.5,  MLP:9.9,  RF:5.6,  flag:false },
+  { variable:'Nationality',          modality:'Portuguese',      share:'97.5%', GB:6.7,  LR:5.9,  MLP:9.7,  RF:5.0,  flag:false },
+  { variable:'Scholarship holder',   modality:'No',              share:'74.7%', GB:9.1,  LR:7.9,  MLP:12.6, RF:6.7,  flag:false },
+  { variable:'Scholarship holder',   modality:'Yes',             share:'25.3%', GB:1.1,  LR:1.1,  MLP:3.2,  RF:1.1,  flag:false },
+  { variable:'Tuition fees up to date', modality:'No',           share:'11.1%', GB:64.3, LR:35.7, MLP:64.3, RF:42.9, flag:true  },
+  { variable:'Tuition fees up to date', modality:'Yes',          share:'88.9%', GB:5.2,  LR:5.0,  MLP:8.3,  RF:4.0,  flag:false },
+];
+
+const decayThresholds = [0.50,0.55,0.60,0.62,0.65,0.70,0.75,0.80,0.85,0.90,0.95];
+const decayData = {
+  'Tuition fees (No)': [0.59,0.44,0.30,0.29,0.29,0.21,0.15,0.12,0.05,0.05,0.01],
+  'Debtor (Yes)':      [0.27,0.26,0.25,0.21,0.20,0.18,0.04,0.04,0.04,0.04,0.01],
+  'Gender (Male)':     [0.12,0.10,0.08,0.07,0.06,0.05,0.03,0.02,0.01,0.01,0.00],
+  'Scholarship (No)':  [0.09,0.08,0.07,0.06,0.06,0.05,0.03,0.01,0.01,0.01,0.00],
+  'Displaced (No)':    [0.08,0.07,0.06,0.05,0.05,0.04,0.02,0.01,0.01,0.00,0.00],
+};
+const decayColors = { 'Tuition fees (No)':C.amber,'Debtor (Yes)':C.rose,'Gender (Male)':C.blue,'Scholarship (No)':'#a855f7','Displaced (No)':C.LR };
+
+const corrDebtor = [
+  { m:'1st sem (approved)', test:-0.117397, train:-0.107481 },
+  { m:'1st sem (grade)',    test:-0.099544, train:-0.112469 },
+  { m:'2nd sem (approved)', test:-0.173182, train:-0.147190 },
+  { m:'2nd sem (grade)',    test:-0.148863, train:-0.145587 },
+];
+const corrTuition = [
+  { m:'1st sem (approved)', test:0.195501, train:0.244942 },
+  { m:'1st sem (grade)',    test:0.178602, train:0.266044 },
+  { m:'2nd sem (approved)', test:0.246127, train:0.299636 },
+  { m:'2nd sem (grade)',    test:0.230503, train:0.310400 },
+];
+
+// ── Chart defaults ────────────────────────────────────────────────────────────
+Chart.defaults.color = C.muted;
+Chart.defaults.borderColor = C.border;
+Chart.defaults.font.family = 'system-ui,-apple-system,sans-serif';
+Chart.defaults.font.size = 11;
+function fprCol(v) { return v>40?C.amber:v>20?C.rose:v>10?'#fbbf24':C.text; }
+
+// ── Performance ───────────────────────────────────────────────────────────────
+const keys=['accuracy','precision','recall','auc'], klbls=['Accuracy','Precision','Recall','AUC'];
+const ptbody = document.getElementById('perf-tbody');
+models.forEach((m,i) => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td class="l"><span class="badge" style="background:${MC[i]}22;color:${MC[i]}">${m.short}</span><span style="color:#8b949e;font-size:.78rem">${m.model}</span></td><td class="r mono" style="color:${m.accuracy>85?C.LR:C.text}">${m.accuracy.toFixed(1)}%</td><td class="r mono" style="color:${m.precision>85?C.LR:C.text}">${m.precision.toFixed(1)}%</td><td class="r mono" style="color:${m.recall>74?C.LR:C.text}">${m.recall.toFixed(1)}%</td><td class="r mono" style="color:${m.auc>90?C.LR:C.text}">${m.auc.toFixed(1)}%</td>`;
+  ptbody.appendChild(tr);
+});
+
+new Chart(document.getElementById('radarChart'), {
+  type:'radar',
+  data:{ labels:['Accuracy','Precision','Recall','AUC'], datasets:models.map((m,i) => ({ label:m.short, data:[m.accuracy,m.precision,m.recall,m.auc], borderColor:MC[i], backgroundColor:MC[i]+'18', borderWidth:1.5, pointRadius:3 })) },
+  options:{ animation:false, scales:{ r:{ min:65,max:95,ticks:{display:false},grid:{color:C.border},pointLabels:{color:C.muted,font:{size:11}} } }, plugins:{ legend:{labels:{boxWidth:10,font:{size:11}}} } }
+});
+
+const mbCont = document.getElementById('minibars');
+keys.forEach((k,ki) => {
+  const card = document.createElement('div'); card.className='card'; card.style.padding='.85rem';
+  let html = `<div class="clabel">${klbls[ki]}</div>`;
+  models.forEach((m,i) => { html += `<div style="font-size:.65rem;font-weight:700;color:${MC[i]};margin-bottom:.18rem">${m.short}</div><div class="mbar"><div class="mbar-track"><div class="mbar-fill" style="width:${m[k]}%;background:${MC[i]}"></div></div><span class="mbar-val">${m[k].toFixed(1)}%</span></div>`; });
+  card.innerHTML=html; mbCont.appendChild(card);
+});
+
+// ── FPR ───────────────────────────────────────────────────────────────────────
+new Chart(document.getElementById('fprChart'), {
+  type:'bar',
+  data:{ labels:fprGroups.map(r=>r.name), datasets:['GB','LR','MLP','RF'].map((k,i) => ({ label:k, data:fprGroups.map(r=>r[k]), backgroundColor:MC[i], borderRadius:3 })) },
+  options:{ animation:false, indexAxis:'y', scales:{ x:{max:70,ticks:{callback:v=>v+'%'},grid:{color:C.border+'80'}}, y:{grid:{display:false},ticks:{color:C.text}} }, plugins:{ legend:{labels:{boxWidth:10,font:{size:11}}}, tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}%`}} } }
+});
+
+function makeCallout(id,label,vals,color) {
+  let html=`<div style="font-size:.75rem;font-weight:700;color:${color};margin-bottom:.75rem">${label}</div>`;
+  vals.forEach(([m,v]) => { html+=`<div style="margin-bottom:.45rem"><div style="display:flex;justify-content:space-between;margin-bottom:.15rem"><span style="font-size:.7rem;color:#8b949e">${m}</span><span style="font-size:.7rem;font-family:monospace;font-weight:700;color:${color}">${v}%</span></div><div class="cbar-track"><div class="cbar-fill" style="width:${v}%;background:${color}"></div></div></div>`; });
+  document.getElementById(id).innerHTML=html;
+}
+makeCallout('callout-tuition','Tuition fees up to date — No',[['GB',64.3],['LR',35.7],['MLP',64.3],['RF',42.9]],C.amber);
+makeCallout('callout-debtor','Debtor — Yes',[['GB',28.6],['LR',34.3],['MLP',34.3],['RF',25.7]],C.rose);
+
+const fprTbody = document.getElementById('fpr-tbody');
+fullFpr.forEach(row => {
+  const tr=document.createElement('tr'); if(row.flag) tr.className='hl';
+  const ac=row.flag?`style="color:${C.amber}"`:'', ab=row.flag?`style="color:${C.amber};font-weight:700"`:'' ;
+  tr.innerHTML=`<td class="l dim" ${ac}>${row.variable}</td><td class="l" ${ab}>${row.flag?'★ ':''}${row.modality}</td><td class="r mono dim">${row.share}</td><td class="r mono" style="color:${fprCol(row.GB)};font-weight:${row.GB>20?700:400}">${row.GB.toFixed(1)}%</td><td class="r mono" style="color:${fprCol(row.LR)};font-weight:${row.LR>20?700:400}">${row.LR.toFixed(1)}%</td><td class="r mono" style="color:${fprCol(row.MLP)};font-weight:${row.MLP>20?700:400}">${row.MLP.toFixed(1)}%</td><td class="r mono" style="color:${fprCol(row.RF)};font-weight:${row.RF>20?700:400}">${row.RF.toFixed(1)}%</td>`;
+  fprTbody.appendChild(tr);
+});
+
+// ── Decay ─────────────────────────────────────────────────────────────────────
+new Chart(document.getElementById('decayChart'), {
+  type:'line',
+  data:{ labels:decayThresholds.map(t=>t.toFixed(2)), datasets:Object.entries(decayData).map(([name,vals]) => ({ label:name, data:vals, borderColor:decayColors[name], backgroundColor:'transparent', borderWidth:2, pointRadius:3, borderDash:name==='Tuition fees (No)'||name==='Debtor (Yes)'?[]:[4,3] })) },
+  options:{ animation:false, scales:{ x:{title:{display:true,text:'Decision threshold',color:C.muted},grid:{color:C.border+'80'}}, y:{title:{display:true,text:'False positive rate',color:C.muted},min:0,max:0.65,ticks:{callback:v=>v.toFixed(2)},grid:{color:C.border+'80'}} }, plugins:{ legend:{labels:{boxWidth:12,font:{size:11}}}, tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.raw.toFixed(2)}`}} } }
+});
+
+// ── Features ──────────────────────────────────────────────────────────────────
+new Chart(document.getElementById('featChart'), {
+  type:'bar',
+  data:{ labels:features.map(r=>r.f), datasets:[{ label:'Importance', data:features.map(r=>r.v), backgroundColor:features.map(r=>r.fin?C.amber:C.blue), borderRadius:3 }] },
+  options:{ animation:false, indexAxis:'y', scales:{ x:{max:16,ticks:{callback:v=>v+'%'},grid:{color:C.border+'80'}}, y:{grid:{display:false},ticks:{color:C.text,font:{size:10}}} }, plugins:{ legend:{display:false}, tooltip:{callbacks:{label:ctx=>` ${ctx.raw.toFixed(4)}`}} } }
+});
+
+const top5El = document.getElementById('top5');
+[...features].reverse().slice(0,5).forEach((f,i) => {
+  const pct=(f.v/15.09)*100, col=f.fin?C.amber:C.blue;
+  const div=document.createElement('div'); div.className='feat-row';
+  div.innerHTML=`<div class="feat-rank">${i+1}</div><div style="flex:1"><div style="font-size:.72rem;color:${col};margin-bottom:.18rem">${f.f}</div><div style="height:4px;background:#21262d;border-radius:2px"><div style="width:${pct}%;height:100%;background:${col};border-radius:2px"></div></div></div><span style="font-family:monospace;font-size:.72rem;font-weight:600;color:${col};white-space:nowrap">${f.v.toFixed(4)}</span>`;
+  top5El.appendChild(div);
+});
+
+// ── Correlations ──────────────────────────────────────────────────────────────
+function makeCorrCard(elId,data,color,title,note) {
+  let html=`<div style="display:flex;align-items:center;gap:.45rem;margin-bottom:.85rem"><div style="width:3px;height:1rem;background:${color};border-radius:2px;flex-shrink:0"></div><span style="font-weight:700;font-size:.82rem">${title}</span></div><p style="font-size:.78rem;color:#8b949e;font-style:italic;margin-bottom:.65rem">${note}</p><table><thead><tr><th class="l">Metric</th><th class="r" style="color:#60a5fa">Test</th><th class="r" style="color:#34d399">Train</th><th class="r" style="color:${color}">Δ</th></tr></thead><tbody>`;
+  data.forEach(r => { const d=(r.test-r.train).toFixed(4); html+=`<tr><td class="l">${r.m}</td><td class="r mono" style="color:#60a5fa">${r.test.toFixed(6)}</td><td class="r mono" style="color:#34d399">${r.train.toFixed(6)}</td><td class="r mono" style="color:${color};font-size:.72rem">${parseFloat(d)>0?'+':''}${d}</td></tr>`; });
+  html+=`</tbody></table>`;
+  document.getElementById(elId).innerHTML=html;
+}
+makeCorrCard('corr-debtor',corrDebtor,C.rose,'Debtor (Yes)','For debtor : in the training set, correlation with grades is a bit less strong in magnitude');
+makeCorrCard('corr-tuition',corrTuition,C.amber,'Tuition fees up to date (No)','For students struggling to pay tuition fees : correlation with grades are far less important in magnitude in the testing set');
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+function showTab(id,btn) {
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Active nav on scroll ──────────────────────────────────────────────────────
+const sections = ['intro','litreview','methodo','results','discussion','conclusion','biblio'];
+const navLinks = document.querySelectorAll('.topnav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 120) current = id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+</body>
+</html>
