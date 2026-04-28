@@ -229,26 +229,44 @@
 
       <!-- TAB: PERFORMANCE -->
       <div id="tab-performance" class="tab-content active">
-        <div class="g11 mb">
-          <div class="card">
-            <div class="clabel">Performance Metrics</div>
-            <table><thead><tr>
-              <th class="l">Model</th>
-              <th class="r">Accuracy</th><th class="r">Precision</th><th class="r">Recall</th><th class="r">AUC</th>
-            </tr></thead>
-            <tbody id="perf-tbody"></tbody></table>
-          </div>
-          <div class="card">
-            <div class="clabel">Radar Comparison (scaled 65–95%)</div>
-            <canvas id="radarChart"></canvas>
-          </div>
-        </div>
-        <div class="g4 mb" id="minibars"></div>
-        <div class="card" style="border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.03)">
+  
+  <div class="card mb" style="padding: 1.5rem; border-bottom: 3px solid rgba(34,197,94,.2);">
+    <h3 style="margin-top: 0; color: #333;">Perfromance evaluation</h3>
+    <p style="margin-bottom: 0; line-height: 1.5; color: #555;">
+      This section evaluates model performance. We must be sure our models are technically "production ready" for pertinent bias analysis.
+    </p>
+  </div>
 
-          <div class="finding">The metrics are satisfactory, displaying similar precisions, recalls and area under the curve values to the ones present in the literature. Meaning our models could technically be production ready, enabling a pertinent bias analysis.</div>
-        </div>
-      </div>
+  <div class="g11 mb">
+    <div class="card">
+      <div class="clabel">Performance Metrics</div>
+      <table>
+        <thead>
+          <tr>
+            <th class="l">Model</th>
+            <th class="r">Accuracy</th>
+            <th class="r">Precision</th>
+            <th class="r">Recall</th>
+            <th class="r">AUC</th>
+          </tr>
+        </thead>
+        <tbody id="perf-tbody"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="clabel">Radar Comparison (scaled 65–95%)</div>
+      <canvas id="radarChart"></canvas>
+    </div>
+  </div>
+  
+  <div class="g4 mb" id="minibars"></div>
+  
+  <div class="card" style="border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.03)">
+    <div class="finding">
+      The metrics are satisfactory, displaying similar precisions, recalls and area under the curve values to the ones present in the literature. See the next part for the bias analysis.
+    </div>
+  </div>
+</div>
 
       <!-- TAB: FPR -->
       <div id="tab-fpr" class="tab-content">
@@ -289,7 +307,9 @@
         </div>
         <div class="card" style="border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03)">
           
-          <div class="finding">Preliminary FPR disparity analysis shows that, across all these variables, some disparities exist. For instance, and as shown in the following table, male students are more subject to miscategorization, as well as non-displaced students, non-scholarship holders, etc… However, <strong>two variables stand out : indebted students, and students whose tuition fees aren't up to date.</strong> Depending on the model, from a quarter up to a third of indebted students are miscategorized, and from a third to two thirds of students with invalid tuition fees are miscategorized. To understand what's going on here, let's have a look at how our models make their decisions.</div>
+          <div class="finding">Preliminary FPR disparity analysis shows that, across all these variables, some disparities exist. For instance, and as shown in the following table, male students are more subject to miscategorization, as well as non-displaced students, 
+            non-scholarship holders, etc… However, <strong>two variables stand out : indebted students, and students whose tuition fees aren't up to date.</strong> Depending on the model, from a quarter up to a third of indebted students are miscategorized, and from 
+            a third to two thirds of students with invalid tuition fees are miscategorized. To understand what's going on here, let's have a look at how our models make their decisions.</div>
         </div>
       </div>
 
