@@ -551,6 +551,22 @@
 
       <!-- TAB: CORRELATIONS -->
       <div id="tab-corr" class="tab-content">
+
+         <!-- TAB: CORRELATIONS -->
+      <div id="tab-corr" class="tab-content">
+        <div class="mb">
+          <div class="card" id="corrJointFinancial"></div>
+        </div>
+        <div class="card" style="border-color:rgba(245,158,11,.2);background:rgba(245,158,11,.03)">
+          
+          <div class="finding">
+            What we see here is that, especially for the "tuition fees" variable, students in the training set tend to have lower grades and lower course approval than the students in the testing set. Further correlation analysis supports this claim.
+            <br><br>
+            Essentially, <strong>models learn two correlations in the training phase : grades predict dropout, and financially unstable students tend to have lower grades and to drop out more consequently.</strong> However, in the testing set, those correlations are not present as much, hence <strong>the models punish students based on correlations learned in training that are not found in testing.</strong> This is less of the case for the random forest model because these types of models are built to overfit less on training data.
+          </div>
+        </div>
+      </div>
+
         <div class="mb">
           <div class="card" id="corrJointFinancial"></div>
         </div>
