@@ -377,9 +377,15 @@
         </div>
 
         <!-- Finding: non-financial -->
-    <div class="card" style="border-color:rgba(34,197,94,.25); background:rgba(34,197,94,.03)">
-          <div class="finding">What we see on those graphs is that, except for the Multiple-Layer-Perceptron, all models miscategorized students they are <strong>relatively unsure with</strong>. A lot of the miscategorization disparities happen with students whose dropout probabilities are between 0.5 and 0.8. With a decision threshold set at 0.5, the models still <strong>categorize these students as dropouts</strong>, even if they are not utterly convinced they are in fact going to drop out. A simple solution to this problem is to <strong>raise the decision threshold to 0.8 to cut miscategorization</strong>, and allow for students to be labeled as &ldquo;dropout&rdquo; only when the probability is high.</div>
-        </div>
+    <div class="card mb" style="border-color:rgba(34,197,94,.25); background:rgba(34,197,94,.03)">
+  <div class="finding" style="--card-green: rgb(34, 197, 94);">
+    What we see on those graphs is that, except for the Multiple-Layer-Perceptron, all models miscategorized students they are <strong style="color: var(--card-green);">relatively unsure with</strong>. 
+    A lot of the miscategorization disparities happen with students whose dropout probabilities are between 0.5 and 0.8. 
+    With a decision threshold set at 0.5, the models still <strong style="color: var(--card-green);">categorize these students as dropouts</strong>, 
+    even if they are not utterly convinced they are in fact going to drop out. 
+    A simple solution to this problem is to <strong style="color: var(--card-green);">raise the decision threshold to 0.8 to cut miscategorization</strong>...
+  </div>
+</div>
 
         <!-- Transition -->
         <div class="card mb" style="border-color:rgba(245,158,11,.15);background:rgba(245,158,11,.02)">
